@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="bamboo">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HọcSáo — Ứng dụng học sáo trúc Việt Nam với phản hồi thời gian thực" />
+  <meta name="theme-color" content="#100d09" />
+
+  <title>{% block title %}HọcSáo{% endblock %} — Học Sáo Trúc Việt Nam</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="/static/style.css?v=20261109_v6" />
+
+  <!-- KaTeX for Music Math Formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous" />
+
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+<div class="app-layout">
+
+  <!-- ══════════════════════════════════════════
+       SIDEBAR NAVIGATION
+       ══════════════════════════════════════════ -->
+  <aside class="sidebar" aria-label="Điều hướng chính">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <span class="logo-icon" aria-hidden="true" style="color: #e6a23c;">🎋</span>
+      <div>
+        <div class="logo-text">HọcSáo</div>
+        <div class="logo-ver">v0.1 Sáo Trúc Việt</div>
+      </div>
+    </div>
+
+    <!-- Khẩu hiệu dân tộc ấm áp -->
+    <div class="folk-motto">
+      🎋 "Học sáo trúc dân tộc — Giữ gìn hồn quê Việt"
+    </div>
+
+    <!-- Nav Links -->
+    <nav class="sidebar-nav" aria-label="Menu chính">
+
+      <a href="/"
+         class="nav-link{% if request.url.path == '/' %} active{% endif %}"
+         data-path="/"
+         aria-current="{% if request.url.path == '/' %}page{% else %}false{% endif %}">
+        <span class="nav-icon" aria-hidden="true">🏠</span>
+        Tổng quan
+      </a>
+
+      <a href="/ly-thuyet"
+         class="nav-link{% if request.url.path.startswith('/ly-thuyet') %} active{% endif %}"
+         data-path="/ly-thuyet"
+         aria-current="{% if request.url.path.startswith('/ly-thuyet') %}page{% else %}false{% endif %}">
+        <span class="nav-icon" aria-hidden="true">📚</span>
+        Lý thuyết
+      </a>
+
+      <a href="/thuc-hanh"
+         class="nav-link{% if request.url.path == '/thuc-hanh' and not request.url.fragment %} active{% endif %}"
+         data-path="/thuc-hanh"
+         aria-current="{% if request.url.path.startswith('/thuc-hanh') %}page{% else %}false{% endif %}">
+        <span class="nav-icon" aria-hidden="true">🎶</span>
+        Thực hành
+      </a>
+
+      <a href="/game"
+         class="nav-link{% if request.url.path == '/game' or request.url.path == '/game-thoi-sao' %} active{% endif %}"
+         data-path="/game"
+         id="nav-flute-game"
+         aria-current="{% if request.url.path == '/game' %}page{% else %}false{% endif %}"
+         style="display: flex; align-items: center;">
+        <span class="nav-icon" aria-hidden="true">🎮</span>
+        <span>Game Thổi Sáo</span>
+        <span class="badge badge-orange text-xs" style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; font-weight: 800;">HOT</span>
+      </a>
+
+      <div class="nav-section-label">Trí Tuệ Nhân Tạo (AI)</div>
+
+      <a href="/ai-camera"
+         class="nav-link{% if request.url.path.startswith('/ai-camera') or request.url.path.startswith('/luyen-the-tay') %} active{% endif %}"
+         data-path="/ai-camera"
+         aria-current="{% if request.url.path.startswith('/ai-camera') %}page{% else %}false{% endif %}">
+        <span class="nav-icon" aria-hidden="true">📷</span>
+        Camera AI Thế Tay
+      </a>
+
+      <a href="/ai-tutor"
+         class="nav-link{% if request.url.path.startswith('/ai-tutor') %} active{% endif %}"
+         data-path="/ai-tutor"
+         aria-current="{% if request.url.path.startswith('/ai-tutor') %}page{% else %}false{% endif %}"
+         style="display: flex; align-items: center;">
+        <span class="nav-icon" aria-hidden="true">🧠</span>
+        <span>Gia Sư AI</span>
+        <span class="badge badge-green text-xs" style="margin-left: auto; font-size: 0.65rem; padding: 2px 6px; font-weight: 800;">MỚI</span>
+      </a>
+
+      <div class="nav-section-label">Hệ Thống</div>
+
+      <a href="/cai-dat"
+         class="nav-link{% if request.url.path.startswith('/cai-dat') %} active{% endif %}"
+         data-path="/cai-dat"
+         aria-current="{% if request.url.path.startswith('/cai-dat') %}page{% else %}false{% endif %}">
+        <span class="nav-icon" aria-hidden="true">⚙️</span>
+        Cài đặt
+      </a>
+
+    </nav>
+
+    <!-- Footer & Theme Switcher -->
+    <div class="sidebar-footer" aria-label="Thông tin phiên bản">
+      <div style="font-weight: 600; color: #e6a23c; margin-bottom: 6px;">HọcSáo Việt Nam v0.1</div>
+      <button id="theme-toggle-btn" type="button" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">
+        <span>🎋</span> Tre Trúc Mộc Mạc
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ══════════════════════════════════════════
+       MAIN CONTENT
+       ══════════════════════════════════════════ -->
+  <main class="main-content" id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+</div><!-- .app-layout -->
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container" aria-live="polite" aria-label="Thông báo"></div>
+
+<!-- KaTeX JS & Auto-render -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+<!-- Main JS -->
+<script src="/static/app.js?v=20261109"></script>
+
+<script>
+  // Chuyển đổi Theme: Tre Trúc Mộc Mạc vs Đêm Đèn Lồng
+  document.addEventListener('DOMContentLoaded', () => {
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+      const saved = localStorage.getItem('hocsao_theme') || 'bamboo';
+      document.documentElement.setAttribute('data-theme', saved);
+      themeBtn.innerHTML = saved === 'bamboo' ? '<span>🎋</span> Tre Trúc Mộc' : '<span>🏮</span> Đêm Đèn Lồng';
+
+      themeBtn.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme') || 'bamboo';
+        const next = cur === 'bamboo' ? 'dark' : 'bamboo';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('hocsao_theme', next);
+        themeBtn.innerHTML = next === 'bamboo' ? '<span>🎋</span> Tre Trúc Mộc' : '<span>🏮</span> Đêm Đèn Lồng';
+        if (typeof showToast === 'function') {
+          showToast(next === 'bamboo' ? '🎋 Giao diện Tre Trúc Mộc Mạc (Ấm áp, truyền thống)' : '🏮 Giao diện Đêm Đèn Lồng (Hiện đại, huyền bí)', 'info', 2000);
+        }
+      });
+    }
+  });
+</script>
+
+{% block scripts %}{% endblock %}
+{% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

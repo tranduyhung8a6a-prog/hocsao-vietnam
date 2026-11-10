@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}Camera AI & Thế Bấm Tay 6 Lỗ{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fadein" style="margin-bottom: 20px;">
+  <div>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+      <span class="badge badge-green">THỊ GIÁC MÁY TÍNH AI</span>
+      <span class="badge badge-orange">ĐỐI CHIẾU ĐA PHƯƠNG THỨC</span>
+      <span class="badge badge-blue">SÁO 6 LỖ CHUẨN VIỆT NAM</span>
+    </div>
+    <h1 class="page-title" style="font-size: 1.85rem; font-weight: 800; color: #fff;">
+      📷 Camera AI Soi Thế Bấm & Tư Thế Sáo
+    </h1>
+    <p class="page-subtitle" style="font-size: 0.95rem; color: var(--text-sec); max-width: 800px;">
+      Hệ thống AI nhận diện 21 khớp xương bàn tay, kiểm tra độ bịt kín của 6 lỗ sáo và kết hợp phân tích âm thanh từ Micro để chỉ ra chính xác lỗi hở ngón hay thổi quá mạnh lên Quãng 2.
+    </p>
+  </div>
+</div>
+
+<div class="page-body">
+  <div style="display: grid; grid-template-columns: minmax(320px, 1.25fr) minmax(300px, 1fr); gap: 24px; align-items: start;">
+
+    <!-- ── CỘT TRÁI: CAMERA WEBCAM & SKELETON 6 LỖ SÁO ── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      
+      <!-- Card Khung hình Camera -->
+      <div class="card p-18" style="background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg); position: relative; overflow: hidden;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">📹</span>
+            <strong style="color: #fff; font-size: 0.98rem;">Gương Soi Thế Bấm Bàn Tay (Webcam)</strong>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <!-- Thẻ trạng thái Micro -->
+            <div id="cam-live-audio-badge" style="display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+              <span>🎤</span> Chờ tiếng sáo...
+            </div>
+            <button id="btn-calibrate-holes" class="btn btn-secondary" style="background: var(--surface2); color: var(--text); font-weight: 700; font-size: 0.82rem; padding: 7px 12px; border-radius: var(--radius-md); border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 5px;" title="Kéo thả các vòng tròn lỗ sáo để khớp với góc cầm sáo thật của bạn">
+              <span>🎯</span> Căn Chỉnh Vị Trí 6 Lỗ
+            </button>
+            <button id="btn-reset-holes" class="btn btn-secondary" style="background: var(--surface2); color: var(--text-sec); font-size: 0.82rem; padding: 7px 10px; border-radius: var(--radius-md); border: 1px solid var(--border); cursor: pointer;" title="Đặt lại vị trí 6 lỗ về mặc định">
+              <span>🔄</span>
+            </button>
+            <button id="btn-toggle-cam" class="btn btn-primary" style="background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+              <span>🔴</span> Bật Camera
+            </button>
+          </div>
+        </div>
+
+        <!-- Video ẩn + Canvas hiển thị và vẽ Overlay -->
+        <div style="position: relative; width: 100%; aspect-ratio: 4/3; background: #060b13; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+          <video id="cameraVideo" playsinline autoplay muted style="display: none;"></video>
+          <canvas id="cameraCanvas" width="640" height="480" style="width: 100%; height: 100%; object-fit: cover; display: block;"></canvas>
+          
+          <div id="cam-placeholder" style="position: absolute; text-align: center; color: var(--text-sec); font-size: 0.9rem; pointer-events: none;">
+            <div style="font-size: 2.4rem; margin-bottom: 8px;">📷</div>
+            <div style="font-size: 1.05rem; font-weight: 700; color: #fff;">Bấm "Bật Camera" để mở gương soi ngón tay</div>
+            <div style="font-size: 0.82rem; opacity: 0.8; margin-top: 6px;">(Hệ thống tự động kích hoạt AI MediaPipe 21 khớp hoặc Thị giác quang học 100% offline)</div>
+          </div>
+        </div>
+
+        <!-- Bảng 6 Lỗ Sáo Điều Khiển Trực Quan -->
+        <div style="margin-top: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.04em;">
+              🎋 Trạng thái 6 lỗ sáo (Bấm trực tiếp hoặc chạm vào màn hình):
+            </div>
+            <span style="font-size: 0.75rem; color: #4ade80;">🟢 Kín &nbsp;|&nbsp; 🔴 Mở</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;">
+            <button type="button" class="btn-cam-hole closed" id="cam-hole-btn-1" data-hole="1">
+              <span class="dot" id="cam-hole-dot-1"></span>
+              <span class="l-name">Lỗ 1</span>
+              <span class="f-name">Trỏ T</span>
+            </button>
+            <button type="button" class="btn-cam-hole closed" id="cam-hole-btn-2" data-hole="2">
+              <span class="dot" id="cam-hole-dot-2"></span>
+              <span class="l-name">Lỗ 2</span>
+              <span class="f-name">Giữa T</span>
+            </button>
+            <button type="button" class="btn-cam-hole closed" id="cam-hole-btn-3" data-hole="3">
+              <span class="dot" id="cam-hole-dot-3"></span>
+              <span class="l-name">Lỗ 3</span>
+              <span class="f-name">Áp út T</span>
+            </button>
+            <button type="button" class="btn-cam-hole closed" id="cam-hole-btn-4" data-hole="4">
+              <span class="dot" id="cam-hole-dot-4"></span>
+              <span class="l-name">Lỗ 4</span>
+              <span class="f-name">Trỏ P</span>
+            </button>
+            <button type="button" class="btn-cam-hole closed" id="cam-hole-btn-5" data-hole="5">
+              <span class="dot" id="cam-hole-dot-5"></span>
+              <span class="l-name">Lỗ 5</span>
+              <span class="f-name">Giữa P</span>
+            </button>
+            <button type="button" class="btn-cam-hole closed" id="cam-hole-btn-6" data-hole="6">
+              <span class="dot" id="cam-hole-dot-6"></span>
+              <span class="l-name">Lỗ 6</span>
+              <span class="f-name">Áp út P</span>
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-sec); margin-top: 6px;">
+            <span>👈 Cụm tay trái (gần miệng thổi)</span>
+            <span>Cụm tay phải (gần đuôi sáo) 👉</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Khung hướng dẫn cầm sáo chuẩn cho Camera AI -->
+      <div class="card p-14" style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.82rem; color: var(--text-sec); line-height: 1.6;">
+        <strong style="color: #fff; font-size: 0.88rem;">💡 Mẹo cầm sáo để Camera AI bắt chuẩn nhất:</strong>
+        <ol style="margin: 6px 0 0 18px; padding: 0;">
+          <li>Ngồi thẳng lưng, đặt webcam hoặc laptop ngang tầm ngực hoặc tầm mắt.</li>
+          <li>Giữ sáo ngang nghiêng nhẹ 10°–15° sang bên phải (tay phải hơi thấp hơn tay trái).</li>
+          <li>Nếu các lỗ sáo trên màn hình chưa trùng với cây sáo thật của bạn, hãy bấm nút <strong>"🎯 Căn Chỉnh Vị Trí 6 Lỗ"</strong> rồi kéo các vòng tròn đặt đúng lên 6 lỗ sáo thật của bạn!</li>
+        </ol>
+      </div>
+
+    </div>
+
+    <!-- ── CỘT PHẢI: CHỌN NỐT, CHẨN ĐOÁN GIA SƯ AI & ÂM THANH ── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      
+      <!-- 1. Chọn Nốt Mục Tiêu Muốn Thử Nghiệm -->
+      <div class="card p-18" style="background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg);">
+        <div style="font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+          <span>🎯</span> Chọn Nốt Mục Tiêu Cần Luyện Bấm Ngón:
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <button class="cam-target-pill active" data-note="Đô 1">Đô 1 (C4)</button>
+          <button class="cam-target-pill" data-note="Rê 1">Rê 1 (D4)</button>
+          <button class="cam-target-pill" data-note="Mi 1">Mi 1 (E4)</button>
+          <button class="cam-target-pill" data-note="Fa 1">Fa 1 (F4)</button>
+          <button class="cam-target-pill" data-note="Sol 1">Sol 1 (G4)</button>
+          <button class="cam-target-pill" data-note="La 1">La 1 (A4)</button>
+          <button class="cam-target-pill" data-note="Si 1">Si 1 (B4)</button>
+          <button class="cam-target-pill" data-note="Đô 2">Đô 2 (C5)</button>
+          <button class="cam-target-pill" data-note="Rê 2">Rê 2 (D5)</button>
+        </div>
+      </div>
+
+      <!-- 2. HỘP THOẠI CHẨN ĐOÁN GIA SƯ AI ĐA PHƯƠNG THỨC -->
+      <div class="card p-18" style="background: var(--surface); border: 2px solid var(--accent); border-radius: var(--radius-lg); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.3rem;">🧠</span>
+            <strong style="color: #fff; font-size: 1.05rem;">Gia Sư AI — Chẩn Đoán Đa Phương Thức</strong>
+          </div>
+          <span class="badge badge-green text-xs">Thời gian thực</span>
+        </div>
+
+        <!-- Khung phản hồi động từ camera_vision.js -->
+        <div id="ai-multimodal-feedback" class="p-16 rounded-xl border border-blue-500 bg-blue-950/40 text-blue-200" style="border-radius: 12px; padding: 14px; border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(15, 23, 42, 0.6);">
+          <div style="font-size: 0.92rem; font-weight: 600;">
+            ℹ️ Hệ thống đã sẵn sàng. Bấm nút các lỗ sáo hoặc bật camera để nhận xét phản hồi tức thì.
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-sec); line-height: 1.5;">
+          💡 <strong>Nguyên lý thông minh:</strong> AI quan sát hình ảnh ngón tay bạn đang bịt lỗ nào và lắng nghe âm thanh bạn thổi. Nếu tay bấm Đô 1 mà âm thanh ra Đô 2, AI sẽ nhắc bạn giảm bớt lực hơi chứ không báo bạn bấm sai ngón!
+        </div>
+      </div>
+
+      <!-- 3. Liên kết chuyển sang phòng thực hành có micro -->
+      <div class="card p-16" style="background: rgba(88, 166, 255, 0.08); border: 1px solid var(--accent2); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-weight: 700; color: #fff; font-size: 0.9rem;">Thực hành thổi sáo với đồng hồ đo cao độ Tuner</div>
+          <div style="font-size: 0.78rem; color: var(--text-sec);">Bật micro để đo chính xác từng nốt và luyện các bài dân ca Bắc Bộ.</div>
+        </div>
+        <a href="/thuc-hanh" class="btn btn-secondary" style="font-weight: 700; padding: 7px 14px; border-radius: var(--radius-md); text-decoration: none; font-size: 0.85rem; color: #fff; background: var(--surface2); border: 1px solid var(--border);">
+          Vào phòng tập ➔
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+.btn-cam-hole {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-cam-hole .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+  display: inline-block;
+}
+.btn-cam-hole.closed .dot {
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+.btn-cam-hole.open .dot {
+  background: #ef4444;
+}
+.btn-cam-hole .l-name {
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+.btn-cam-hole .f-name {
+  font-size: 0.65rem;
+  color: var(--text-sec);
+}
+.btn-cam-hole:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.cam-target-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cam-target-pill.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(247, 129, 102, 0.4);
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<!-- Thư viện AI MediaPipe Hands (Tải từ CDN chất lượng cao với fallback dự phòng) -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script src="/static/camera_vision.js?v=20261110_v2"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const camVision = new CameraVision({
+    videoId: 'cameraVideo',
+    canvasId: 'cameraCanvas',
+    feedbackId: 'ai-multimodal-feedback',
+    targetNote: 'Đô 1'
+  });
+
+  const btnToggle = document.getElementById('btn-toggle-cam');
+  const btnCalibrate = document.getElementById('btn-calibrate-holes');
+  const btnReset = document.getElementById('btn-reset-holes');
+  const placeholder = document.getElementById('cam-placeholder');
+  let isCamOn = false;
+
+  btnToggle.addEventListener('click', async () => {
+    if (!isCamOn) {
+      await camVision.startCamera();
+      if (camVision.isRunning) {
+        isCamOn = true;
+        btnToggle.innerHTML = '<span>⏹</span> Tắt Camera';
+        btnToggle.style.background = '#ef4444';
+        if (placeholder) placeholder.style.display = 'none';
+      }
+    } else {
+      camVision.stopCamera();
+      isCamOn = false;
+      btnToggle.innerHTML = '<span>🔴</span> Bật Camera';
+      btnToggle.style.background = 'var(--accent)';
+      if (placeholder) placeholder.style.display = 'block';
+    }
+  });
+
+  if (btnCalibrate) {
+    btnCalibrate.addEventListener('click', () => {
+      camVision.toggleCalibration();
+    });
+  }
+
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      if (confirm('Bạn có muốn đặt lại vị trí 6 lỗ sáo về chuẩn mặc định ban đầu không?')) {
+        camVision.resetHolePositions();
+      }
+    });
+  }
+
+  // Gọi chẩn đoán ban đầu với thế nốt Đô 1
+  camVision.requestDiagnosis();
+});
+</script>
+{% endblock %}

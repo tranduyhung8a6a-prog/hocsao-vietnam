@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Cài đặt{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fadein">
+  <div>
+    <h1 class="page-title">⚙️ Cài Đặt Hệ Thống</h1>
+    <p class="page-subtitle">Tùy chỉnh thiết bị thu âm, loại sáo mặc định, ngưỡng chấm điểm và giao diện</p>
+  </div>
+</div>
+
+<div class="page-body">
+  <div style="max-width: 800px; display: flex; flex-direction: column; gap: 24px;">
+
+    <!-- 1. Thiết bị Microphone -->
+    <div class="card p-24">
+      <h2 class="text-base fw-700 text-sec mb-16" style="text-transform: uppercase; letter-spacing: 0.05em;">🎤 Thiết Bị Thu Âm (Microphone)</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <label for="mic-select" class="form-label text-sm fw-600">Chọn microphone nhận diện:</label>
+        <select id="mic-select" class="form-control" style="width: 100%; padding: 10px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <option value="">Đang tải danh sách thiết bị...</option>
+        </select>
+        <p class="text-xs text-sec">Nếu bạn có microphone ngoài hoặc tai nghe có mic, hãy chọn ở đây để chất lượng bắt âm sáo tốt hơn.</p>
+        <div style="margin-top: 8px;">
+          <button id="btn-save-mic" class="btn btn-primary" style="background: var(--accent); color: #fff; padding: 8px 18px; border-radius: var(--radius-md); border: none; font-weight: 600;">
+            Lưu thiết bị
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Loại sáo mặc định -->
+    <div class="card p-24">
+      <h2 class="text-base fw-700 text-sec mb-16" style="text-transform: uppercase; letter-spacing: 0.05em;">🎋 Cấu Hình Sáo Mặc Định</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <label for="default-flute-select" class="form-label text-sm fw-600">Loại sáo mở đầu khi vào phòng luyện:</label>
+        <select id="default-flute-select" class="form-control" style="width: 100%; padding: 10px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <option value="C" selected>Sáo Đô (C5) — Tone chuẩn thông dụng nhất</option>
+          <option value="D">Sáo Rê (D5) — Tone cao réo rắt</option>
+          <option value="G">Sáo Sol (G4) — Tone trầm ấm áp</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 3. Ngưỡng chấm điểm -->
+    <div class="card p-24">
+      <h2 class="text-base fw-700 text-sec mb-16" style="text-transform: uppercase; letter-spacing: 0.05em;">🎯 Ngưỡng Chấm Điểm</h2>
+      <div class="grid-2 gap-16">
+        <div>
+          <label class="form-label text-sm fw-600 mb-6" style="display:block;">Điểm đạt bài tập (%):</label>
+          <input type="number" id="setting-pass-score" value="70" min="50" max="100" class="form-control" style="width: 100%; padding: 10px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <span class="text-xs text-sec">Mặc định: 70 điểm</span>
+        </div>
+        <div>
+          <label class="form-label text-sm fw-600 mb-6" style="display:block;">Dung sai cao độ chuẩn (cent):</label>
+          <input type="number" id="setting-cent-tol" value="20" min="5" max="45" class="form-control" style="width: 100%; padding: 10px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md);">
+          <span class="text-xs text-sec">Mặc định: ±20 cent (chuẩn tai người)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Hiển thị & Ngôn ngữ -->
+    <div class="card p-24">
+      <h2 class="text-base fw-700 text-sec mb-16" style="text-transform: uppercase; letter-spacing: 0.05em;">🎨 Giao Diện & Ký Âm</h2>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label class="form-label text-sm fw-600 mb-6" style="display:block;">Cách hiển thị tên nốt:</label>
+          <select id="setting-note-names" class="form-control" style="width: 100%; padding: 10px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md);">
+            <option value="ca_hai" selected>Hiển thị cả hai (Đô / C)</option>
+            <option value="tieng_viet">Chỉ tiếng Việt (Đô, Rê, Mi...)</option>
+            <option value="quoc_te">Chỉ quốc tế (C, D, E...)</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label text-sm fw-600 mb-6" style="display:block;">Chế độ màu:</label>
+          <select id="setting-theme" class="form-control" style="width: 100%; padding: 10px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md);">
+            <option value="dark" selected>Chế độ Tối (Dark Theme) — Bảo vệ mắt khi luyện tập</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Dữ liệu hồ sơ -->
+    <div class="card p-24">
+      <h2 class="text-base fw-700 text-sec mb-16" style="text-transform: uppercase; letter-spacing: 0.05em;">📁 Dữ Liệu Học Viên</h2>
+      <p class="text-sm text-sec mb-16">Toàn bộ hồ sơ luyện tập, lịch sử điểm số được lưu hoàn toàn trên máy tính của bạn tại thư mục <code>5_DU_LIEU_NGUOI_DUNG/</code>.</p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button id="btn-save-all-settings" class="btn btn-primary" style="background: var(--accent); color: #fff; padding: 10px 24px; border-radius: var(--radius-md); border: none; font-weight: 700;">
+          💾 Lưu tất cả cài đặt
+        </button>
+        <button id="btn-reset-stats" class="btn" style="background: var(--surface2); color: var(--error); padding: 10px 20px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+          Đặt lại lịch sử luyện tập
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Tải danh sách thiết bị âm thanh
+    try {
+      const res = await fetch('/api/thiet-bi-am-thanh');
+      if (res.ok) {
+        const data = await res.json();
+        const select = document.getElementById('mic-select');
+        select.innerHTML = '';
+        if (data.devices && data.devices.length > 0) {
+          data.devices.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.index;
+            opt.textContent = `${d.name} (${d.channels} kênh, ${d.sample_rate}Hz)${d.is_default ? ' [Mặc định]' : ''}`;
+            if (d.index === data.current_index) opt.selected = true;
+            select.appendChild(opt);
+          });
+        } else {
+          select.innerHTML = '<option value="">Microphone mặc định của hệ thống</option>';
+        }
+      }
+    } catch(e) {
+      console.warn('Không thể nạp thiết bị:', e);
+    }
+
+    // 2. Tải cấu hình hiện tại
+    try {
+      const cfgRes = await fetch('/api/cau-hinh');
+      if (cfgRes.ok) {
+        const cfg = await cfgRes.json();
+        if (cfg.loai_sao_mac_dinh) document.getElementById('default-flute-select').value = cfg.loai_sao_mac_dinh;
+        if (cfg.nguong_cham?.diem_qua_bai) document.getElementById('setting-pass-score').value = cfg.nguong_cham.diem_qua_bai;
+        if (cfg.nguong_cham?.cent_tot) document.getElementById('setting-cent-tol').value = cfg.nguong_cham.cent_tot;
+        if (cfg.hien_thi?.ten_not) document.getElementById('setting-note-names').value = cfg.hien_thi.ten_not;
+      }
+    } catch(e) {
+      console.warn('Không thể nạp cấu hình:', e);
+    }
+
+    // 3. Xử lý lưu mic
+    document.getElementById('btn-save-mic')?.addEventListener('click', async () => {
+      const idx = document.getElementById('mic-select').value;
+      if (idx === '') return;
+      try {
+        const res = await fetch('/api/thiet-bi-am-thanh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ device_index: parseInt(idx) })
+        });
+        if (res.ok) {
+          showToast('Đã lưu thiết bị microphone!', 'success');
+        } else {
+          showToast('Lỗi khi lưu microphone', 'error');
+        }
+      } catch(e) {
+        showToast('Không kết nối được server', 'error');
+      }
+    });
+
+    // 4. Xử lý lưu tất cả cài đặt
+    document.getElementById('btn-save-all-settings')?.addEventListener('click', async () => {
+      const payload = {
+        loai_sao_mac_dinh: document.getElementById('default-flute-select').value,
+        nguong_cham: {
+          diem_qua_bai: parseInt(document.getElementById('setting-pass-score').value) || 70,
+          cent_tot: parseInt(document.getElementById('setting-cent-tol').value) || 20
+        },
+        hien_thi: {
+          ten_not: document.getElementById('setting-note-names').value
+        }
+      };
+      try {
+        const res = await fetch('/api/cau-hinh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          showToast('Đã lưu cài đặt thành công!', 'success');
+        } else {
+          showToast('Không thể lưu cài đặt', 'error');
+        }
+      } catch(e) {
+        showToast('Lỗi kết nối server', 'error');
+      }
+    });
+
+    // 5. Đặt lại lịch sử
+    document.getElementById('btn-reset-stats')?.addEventListener('click', async () => {
+      if (confirm('Bạn có chắc chắn muốn đặt lại toàn bộ lịch sử điểm số không?')) {
+        try {
+          const res = await fetch('/api/dat-lai-lich-su', { method: 'POST' });
+          if (res.ok) {
+            showToast('Đã đặt lại lịch sử điểm số!', 'info');
+          }
+        } catch(e) {
+          showToast('Không thể đặt lại lịch sử', 'error');
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

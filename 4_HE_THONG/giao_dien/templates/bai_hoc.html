@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson.title }} — Lý Thuyết Học Sáo{% endblock %}
+
+{% block content %}
+<!-- Thanh tiến trình đọc bài -->
+<div id="read-progress-bar" style="position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; z-index: 999; transition: width 0.1s ease-out;"></div>
+
+<div class="page-header animate-fadein" style="margin-bottom: 24px;">
+  <div>
+    <div style="font-size: 0.85rem; color: var(--text-sec); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+      <a href="/ly-thuyet" style="color: var(--accent2); text-decoration: none;">← Danh Sách Bài Học</a>
+      <span>/</span>
+      <span style="color: #cbd5e1;">Bài {{ "%02d" | format(lesson.order | default(1)) }}</span>
+    </div>
+    <h1 class="page-title" style="font-size: 1.85rem; font-weight: 800; color: #fff;">
+      {{ lesson.title }}
+    </h1>
+    <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
+      <span class="badge {% if lesson.difficulty == 'Thực hành' %}badge-green{% elif lesson.difficulty == 'Nâng cao' %}badge-red{% else %}badge-blue{% endif %}">
+        {{ lesson.difficulty | default('Cơ bản') }}
+      </span>
+      {% if lesson.estimated_read_time %}
+      <span class="text-xs" style="color: var(--text-sec); background: var(--surface2); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border);">
+        ⏱️ {{ lesson.estimated_read_time }}
+      </span>
+      {% endif %}
+      {% if lesson.tags %}
+        {% for tag in lesson.tags %}
+        <span class="badge badge-gray text-xs">#{{ tag }}</span>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 10px;">
+    <a href="/thuc-hanh" class="btn btn-primary" style="background: var(--accent); color: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(247, 129, 102, 0.35);">
+      <span>🎼</span> Thực hành ngay
+    </a>
+  </div>
+</div>
+
+<div class="page-body">
+  <div style="display: grid; grid-template-columns: 1fr 260px; gap: 32px; align-items: start;">
+
+    <!-- Nội dung chính của bài học -->
+    <article class="card p-32 lesson-article" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); font-size: 1.02rem; line-height: 1.75;">
+      
+      <div class="lesson-content">
+        {{ lesson.content_html | safe }}
+      </div>
+
+      <!-- Khối kêu gọi thực hành cuối bài -->
+      <div style="margin-top: 48px; padding: 24px; border-radius: var(--radius-md); background: linear-gradient(135deg, rgba(247, 129, 102, 0.12) 0%, rgba(22, 27, 34, 0.95) 100%); border: 1px solid rgba(247, 129, 102, 0.3); text-align: center;">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
+          🎉 Bạn đã hoàn thành bài học này!
+        </h3>
+        <p style="color: var(--text-sec); font-size: 0.9rem; max-width: 520px; margin: 0 auto 16px;">
+          Lý thuyết sẽ nhớ sâu hơn khi bạn trực tiếp cầm sáo và thổi. Hãy bật microphone lên để phòng luyện tập chấm điểm cao độ ngay nhé!
+        </p>
+        <a href="/thuc-hanh" class="btn btn-primary" style="background: var(--accent); color: #fff; padding: 12px 28px; border-radius: var(--radius-md); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+          <span>▶</span> Mở Phòng Thực Hành Thổi Sáo
+        </a>
+      </div>
+
+      <!-- Điều hướng Bài trước / Bài kế tiếp -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 12px;">
+        {% if prev_lesson %}
+        <a href="/ly-thuyet/{{ prev_lesson.slug }}" class="btn" style="background: var(--surface2); color: var(--text); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid var(--border); text-decoration: none; font-weight: 600;">
+          ← {{ prev_lesson.title }}
+        </a>
+        {% else %}
+        <div></div>
+        {% endif %}
+
+        {% if next_lesson %}
+        <a href="/ly-thuyet/{{ next_lesson.slug }}" class="btn" style="background: var(--surface2); color: var(--accent); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid rgba(247, 129, 102, 0.3); text-decoration: none; font-weight: 700;">
+          {{ next_lesson.title }} →
+        </a>
+        {% endif %}
+      </div>
+    </article>
+
+    <!-- Mục lục dính (Sticky Sidebar TOC) -->
+    <aside class="card p-20 sticky-toc" style="position: sticky; top: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+      <h3 class="text-xs fw-700 text-sec mb-12" style="text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 6px;">
+        <span>📑</span> Trong bài này
+      </h3>
+      <nav id="toc-nav" class="toc-list" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; max-height: 60vh; overflow-y: auto;">
+        <!-- Tự động sinh bởi JS -->
+      </nav>
+
+      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+        <div style="font-size: 0.78rem; color: var(--text-sec); margin-bottom: 8px;">Gợi ý phím tắt:</div>
+        <a href="/thuc-hanh" class="text-xs" style="color: var(--accent); font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px;">
+          <span>🎋</span> Luyện 9 nốt trên sáo →
+        </a>
+      </div>
+    </aside>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/simulations.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Thanh tiến trình cuộn trang
+    const progressBar = document.getElementById('read-progress-bar');
+    window.addEventListener('scroll', () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+      if (progressBar) progressBar.style.width = `${progress}%`;
+    });
+
+    // 2. Tự động sinh mục lục từ thẻ H2, H3
+    const content = document.querySelector('.lesson-content');
+    const tocNav = document.getElementById('toc-nav');
+    if (!content || !tocNav) return;
+
+    const headings = content.querySelectorAll('h2, h3');
+    if (headings.length === 0) {
+      tocNav.innerHTML = '<span class="text-xs text-sec">Không có đề mục con</span>';
+      return;
+    }
+
+    headings.forEach((h, idx) => {
+      if (!h.id) {
+        h.id = 'heading-' + idx;
+      }
+      const a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.trim();
+      a.style.color = 'var(--text-sec)';
+      a.style.textDecoration = 'none';
+      a.style.padding = '4px 6px';
+      a.style.borderRadius = '4px';
+      a.style.paddingLeft = h.tagName.toLowerCase() === 'h3' ? '14px' : '6px';
+      a.style.fontSize = h.tagName.toLowerCase() === 'h3' ? '0.8rem' : '0.85rem';
+      a.style.transition = 'all 0.15s';
+
+      a.addEventListener('mouseenter', () => {
+        a.style.color = 'var(--text)';
+        a.style.background = 'var(--surface2)';
+      });
+      a.addEventListener('mouseleave', () => {
+        a.style.color = 'var(--text-sec)';
+        a.style.background = 'transparent';
+      });
+
+      tocNav.appendChild(a);
+    });
+  });
+</script>
+{% endblock %}

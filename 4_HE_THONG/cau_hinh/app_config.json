@@ -1,0 +1,27 @@
+{
+  "ten_app": "HọcSáo",
+  "phien_ban": "0.1.0",
+  "giai_doan": 1,
+  "loai_sao_mac_dinh": "C",
+  "mic_mac_dinh": null,
+  "cam_mac_dinh": null,
+  "nguong_cham": {
+    "diem_qua_bai": 75,
+    "cent_tot": 18,
+    "cent_chap_nhan": 35,
+    "rms_toi_thieu": 0.015,
+    "rms_toi_da": 0.5
+  },
+  "hien_thi": {
+    "ten_not": "ca_hai",
+    "che_do_mau": "toi",
+    "mau_chu_dao": "coral"
+  },
+  "am_thanh": {
+    "sample_rate": 16000,
+    "chunk_size": 1024,
+    "channels": 1
+  },
+  "luu_ban_thu": "hoi",
+  "ngon_ngu": "vi"
+}

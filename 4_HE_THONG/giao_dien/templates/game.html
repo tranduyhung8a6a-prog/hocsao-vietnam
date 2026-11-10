@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+
+{% block title %}Game Thổi Sáo Trúc & Khổ Nhạc Đi Ngang (Flute Sheet Staff & Highway){% endblock %}
+
+{% block content %}
+<div class="container animate-fadein" style="max-width: 1240px; margin: 0 auto; padding-bottom: 50px;">
+
+  <!-- Tiêu đề & Giới thiệu Game -->
+  <div class="page-header" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px;">
+    <div>
+      <div style="display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+        <span class="badge badge-orange text-xs" style="background: rgba(230, 162, 60, 0.2); color: #fde68a; border: 1px solid rgba(230, 162, 60, 0.4);">🎋 DÂN CA QUAN HỌ & SÁO TRÚC VIỆT NAM</span>
+        <span class="badge badge-green text-xs">🎼 KHỔ NHẠC 5 DÒNG KẺ & CÂY SÁO 3D</span>
+        <span class="badge badge-blue text-xs">🎙️ THỔI MICRO HOẶC CHẠM NỐT ẢO</span>
+      </div>
+      <h1 style="font-size: 1.95rem; font-weight: 900; color: #fff; margin: 0; display: flex; align-items: center; gap: 12px;">
+        <span style="color: #ffd700;">🎮</span> Game Thổi Sáo Trúc: Thử Thách Giai Điệu & Khổ Nhạc
+      </h1>
+      <p style="color: var(--text-sec); font-size: 0.92rem; margin-top: 6px; line-height: 1.5; max-width: 850px;">
+        Hòa mình vào âm vang dân tộc với <strong>Khổ nhạc 5 dòng kẻ cuộn ngang</strong> và <strong>Cây sáo trúc 3D chỉ dẫn ngón bấm trực quan</strong>. 
+        Thổi bằng sáo trúc thật qua Micro, bấm phím số <strong>1 đến 8</strong>, hoặc <strong>chạm trực tiếp các nốt sáo ảo</strong> bên dưới!
+      </p>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="/thuc-hanh" class="btn btn-secondary" style="padding: 10px 18px; border-radius: var(--radius-md); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 700; background: var(--surface2); color: var(--text); border: 1px solid var(--border);">
+        <span>🎶</span> Quay lại Phòng Thực Hành
+      </a>
+    </div>
+  </div>
+
+  <!-- Thanh Cảnh báo Micro nếu chưa cấp quyền -->
+  <div id="mic-permission-banner" style="display: none; margin-bottom: 16px; padding: 14px 18px; border-radius: var(--radius-md); background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; font-size: 0.9rem;">
+    <div style="display: flex; gap: 12px; align-items: flex-start;">
+      <span style="font-size: 1.5rem;">🎙️</span>
+      <div style="flex: 1;">
+        <b style="color: #fca5a5; font-size: 1rem;">CHƯA CÓ QUYỀN MICROPHONE — BẠN ĐANG CHƠI Ở CHẾ ĐỘ BÀN PHÍM / CHẠM NỐT ẢO</b>
+        <div style="margin-top: 6px; font-size: 0.85rem; line-height: 1.5; color: #cbd5e1;">
+          • <b>Bạn vẫn chơi cực mượt:</b> Bấm phím số <b>1 đến 8</b> trên bàn phím hoặc <b>chạm chuột / chạm tay vào hàng 8 phím sáo ảo</b> ngay dưới khuông nhạc.<br>
+          • <b>Để thổi bằng sáo thật:</b> Bấm biểu tượng <b>ổ khóa 🔒</b> cạnh địa chỉ web trên trình duyệt ➔ Chọn <b>Microphone: Cho phép (Allow)</b> ➔ Nhấn F5.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BẢNG ĐIỀU KHIỂN & CÀI ĐẶT TRẬN ĐẤU ── -->
+  <div class="card p-18" style="background: var(--surface); border: 1px solid rgba(230, 162, 60, 0.25); border-radius: var(--radius-lg); margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+    
+    <!-- Hàng 1: Chế độ hiển thị & Chọn bài hát / đoạn bài -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+      
+      <!-- Chế độ hiển thị: Khổ nhạc đi ngang vs Thác nước rơi -->
+      <div>
+        <label style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Chế độ hiển thị nốt:</label>
+        <div style="display: flex; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 3px; gap: 4px;">
+          <button id="btn-view-staff" type="button" class="btn" style="padding: 8px 18px; font-size: 0.88rem; font-weight: 800; border-radius: 6px; border: none; background: var(--accent, #e6a23c); color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Khổ nhạc 5 dòng kẻ cuộn ngang chuẩn nhạc lý kèm cây sáo trúc 3D trực quan">
+            <span>🎼</span> Khổ Nhạc Đi Ngang (5 Dòng Kẻ)
+          </button>
+          <button id="btn-view-highway" type="button" class="btn" style="padding: 8px 18px; font-size: 0.88rem; font-weight: 700; border-radius: 6px; border: none; background: transparent; color: var(--text-sec); cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Thác nước rơi dọc phong cách Piano Tiles truyền thống">
+            <span>🎹</span> Thác Nước Rơi
+          </button>
+        </div>
+      </div>
+
+      <!-- Chọn bài hát & Chọn đoạn bài -->
+      <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <div>
+          <label for="game-song-select" style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Bài hát thử thách:</label>
+          <select id="game-song-select" class="form-control" style="padding: 9px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 800; font-size: 0.92rem; cursor: pointer;">
+            <!-- JS tự động điền danh sách 6 bài -->
+          </select>
+        </div>
+
+        <div>
+          <label for="game-section-select" style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Đoạn luyện tập:</label>
+          <select id="game-section-select" class="form-control" style="padding: 9px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 700; font-size: 0.88rem; cursor: pointer;">
+            <option value="all" selected>Toàn bộ bài hát</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hàng 2: Kiểu chơi + Tốc độ + Metronome + Looper + Thu âm + Nút hành động -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 14px;">
+      
+      <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <!-- Chế độ Chờ Thổi vs Nhịp Điệu -->
+        <div>
+          <label style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 4px; font-weight: 700;">Phong cách chơi:</label>
+          <div style="display: flex; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2px;">
+            <button id="btn-mode-wait" type="button" class="btn" style="padding: 7px 14px; font-size: 0.82rem; font-weight: 800; border-radius: 6px; border: none; background: var(--accent, #e6a23c); color: #fff; cursor: pointer;" title="Nốt cuộn đến vạch sẽ dừng lại đợi bạn thổi đúng mới đi tiếp (Rất thích hợp cho người mới!)">
+              🐢 Chờ Thổi
+            </button>
+            <button id="btn-mode-flow" type="button" class="btn" style="padding: 7px 14px; font-size: 0.82rem; font-weight: 700; border-radius: 6px; border: none; background: transparent; color: var(--text-sec); cursor: pointer;" title="Nốt cuộn liên tục theo nhịp điệu bài hát (Thử thách phản xạ)">
+              ⚡ Nhịp Điệu
+            </button>
+          </div>
+        </div>
+
+        <!-- Tốc độ -->
+        <div>
+          <label for="game-speed-select" style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 4px; font-weight: 700;">Tốc độ:</label>
+          <select id="game-speed-select" class="form-control" style="padding: 8px 12px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+            <option value="0.75">🐢 Chậm (0.75x)</option>
+            <option value="1.0" selected>⚡ Chuẩn (1.0x)</option>
+            <option value="1.25">🔥 Nhanh (1.25x)</option>
+          </select>
+        </div>
+
+        <!-- Bật / Tắt Tiếng Gõ Nhịp Metronome -->
+        <div>
+          <label style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 4px; font-weight: 700;">Gõ nhịp:</label>
+          <button id="btn-toggle-metronome" type="button" class="btn" style="padding: 8px 13px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 800; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Bật/Tắt âm thanh gõ nhịp Tắc - Tùng để giữ nhịp chuẩn xác">
+            <span>🔔</span> Nhịp: BẬT
+          </button>
+        </div>
+
+        <!-- Vòng lặp A-B Looper -->
+        <div>
+          <label style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 4px; font-weight: 700;">Luyện câu:</label>
+          <button id="btn-toggle-loop" type="button" class="btn" style="padding: 8px 13px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 800; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Tự động lặp lại đoạn đang chọn để bạn luyện ngón liên tục không ngắt quãng">
+            <span>🔁</span> Lặp Đoạn: TẮT
+          </button>
+        </div>
+
+        <!-- Thu âm tiếng sáo -->
+        <div>
+          <label style="font-size: 0.75rem; color: var(--text-sec); display: block; margin-bottom: 4px; font-weight: 700;">Thu âm:</label>
+          <button id="btn-toggle-record" type="button" class="btn" style="padding: 8px 13px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 800; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Ghi âm tiếng sáo thật của bạn qua micro để nghe lại sau khi chơi">
+            <span>🎙️</span> Thu Âm: TẮT
+          </button>
+        </div>
+      </div>
+
+      <!-- Nút Nghe mẫu sáo & Bắt đầu chơi -->
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button id="btn-game-demo" type="button" class="btn btn-secondary" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); font-weight: 700; padding: 10px 18px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 8px; cursor: pointer;" title="Phát mẫu toàn bài bằng âm thanh sáo trúc thật chuẩn">
+          <span>🔊</span> Nghe Mẫu Sáo Thật
+        </button>
+        <button id="btn-game-play" type="button" class="btn btn-primary btn-pulse-action" style="background: var(--accent, #e6a23c); color: #fff; font-weight: 900; font-size: 1rem; padding: 10px 28px; border-radius: var(--radius-md); border: none; display: flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 18px rgba(230, 162, 60, 0.45);">
+          <span>▶</span> Bắt Đầu Chơi
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Thông tin chi tiết bài hát đang chọn -->
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <span id="game-song-title" style="font-weight: 800; color: #ffd700; font-size: 0.98rem; margin-right: 12px;">Lý Cây Đa (Dân Ca Quan Họ Bắc Bộ)</span>
+        <span id="game-song-desc" style="font-size: 0.83rem; color: var(--text-sec);">Bản nhạc PDF thực hành · Nhịp 2/4 · Tempo 90 BPM</span>
+      </div>
+      <div>
+        <span id="game-mode-badge" class="badge badge-blue text-xs" style="padding: 4px 12px; font-weight: 700; background: rgba(88, 166, 255, 0.15); border: 1px solid rgba(88, 166, 255, 0.3);">
+          🎼 Chế độ Khổ Nhạc 5 Dòng Kẻ: Nốt chạy ngang theo phách chuẩn!
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── BẢNG HUD ĐIỂM SỐ, COMBO & ĐỒNG HỒ KIM ĐO CAO ĐỘ (BREATH & CENTS TUNER) ── -->
+  <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: rgba(18, 15, 11, 0.95); border: 1px solid rgba(230, 162, 60, 0.3); border-radius: var(--radius-md); padding: 12px 20px; margin-bottom: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
+    
+    <!-- Điểm số & Combo -->
+    <div style="display: flex; align-items: center; gap: 24px; padding-right: 18px; border-right: 1px solid rgba(255,255,255,0.1);">
+      <div>
+        <div style="font-size: 0.72rem; color: var(--text-sec); text-transform: uppercase; font-weight: 700;">Điểm Số</div>
+        <div id="game-score-val" style="font-size: 2.1rem; font-weight: 900; color: #ffd700; line-height: 1;">0</div>
+      </div>
+      <div>
+        <div style="font-size: 0.72rem; color: var(--text-sec); text-transform: uppercase; font-weight: 700;">Combo Streak</div>
+        <div id="game-combo-val" style="font-size: 1.85rem; font-weight: 900; color: var(--accent, #e6a23c); line-height: 1;">x0</div>
+      </div>
+    </div>
+
+    <!-- Đồng hồ Kim Đo Cao Độ & Luồng Hơi Thở (Breath & Pitch Cents Needle) -->
+    <div style="display: flex; flex-direction: column; align-items: center; padding: 0 10px;">
+      <div style="display: flex; justify-content: space-between; width: 100%; max-width: 420px; font-size: 0.74rem; color: var(--text-sec); font-weight: 700; margin-bottom: 4px;">
+        <span style="color: #eab308;">◄ NON HƠI (-50)</span>
+        <span id="cents-status-msg" style="color: #3fb950; font-weight: 800;">🎯 CHUẨN CAO ĐỘ</span>
+        <span style="color: #f97316;">GIÀ HƠI (+50) ►</span>
+      </div>
+
+      <!-- Thanh trượt kim đo Cents -->
+      <div style="position: relative; width: 100%; max-width: 420px; height: 14px; background: #0a0d14; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); overflow: hidden;">
+        <!-- Vùng xanh chuẩn ở giữa (-15 đến +15) -->
+        <div style="position: absolute; left: 35%; width: 30%; height: 100%; background: rgba(63, 185, 80, 0.35); border-left: 1px dashed rgba(63, 185, 80, 0.6); border-right: 1px dashed rgba(63, 185, 80, 0.6);"></div>
+        <!-- Vạch tâm chuẩn 0 cents -->
+        <div style="position: absolute; left: 50%; width: 2px; height: 100%; background: #3fb950; transform: translateX(-50%);"></div>
+        <!-- Kim đo di chuyển -->
+        <div id="cents-needle" style="position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: #ffd700; box-shadow: 0 0 8px #ffd700; border-radius: 2px; transition: left 0.08s ease;"></div>
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: center; margin-top: 4px; font-size: 0.76rem;">
+        <span style="color: var(--text-sec);">Độ lệch cao độ: <strong id="cents-text-val" style="color: #3fb950;">0 cents</strong></span>
+        <span style="color: var(--border);">|</span>
+        <span style="color: var(--text-sec);">Đang nghe: <span id="game-mic-note-badge" class="badge badge-blue text-xs" style="font-size: 0.85rem; font-weight: 800; padding: 2px 8px;">—</span></span>
+      </div>
+    </div>
+
+    <!-- Phím tắt gợi ý -->
+    <div style="font-size: 0.8rem; color: var(--text-sec); text-align: right; line-height: 1.4; padding-left: 18px; border-left: 1px solid rgba(255,255,255,0.1);">
+      ⌨️ Bấm phím <strong>1 đến 8</strong><br>
+      <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">1=Đô, 2=Rê, 3=Mi, 4=Fa...</span>
+    </div>
+
+  </div>
+
+  <!-- ── KHUNG HIGHWAY CANVAS (KHỔ NHẠC HOẶC THÁC NƯỚC & CÂY SÁO 3D) ── -->
+  <div style="position: relative; width: 100%; height: 540px; border-radius: var(--radius-lg); overflow: hidden; border: 2px solid rgba(230, 162, 60, 0.4); box-shadow: 0 12px 36px rgba(0,0,0,0.7); background: #07090e;">
+    <canvas id="fluteGameCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+  </div>
+
+  <!-- ── BÀN PHÍM SÁO ẢO 8 NỐT TRỰC TIẾP (TOUCH / CLICK NOTE KEYS) ── -->
+  <div style="margin-top: 14px; background: rgba(26, 21, 16, 0.95); border: 1px solid rgba(230, 162, 60, 0.3); border-radius: var(--radius-md); padding: 14px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <div style="font-size: 0.85rem; font-weight: 800; color: #ffd700; display: flex; align-items: center; gap: 8px;">
+        <span>🖐️</span> BÀN PHÍM ẢO 8 NỐT SÁO (BẤM HOẶC CHẠM MÀN HÌNH ĐỂ THỔI NGAY)
+      </div>
+      <div style="font-size: 0.78rem; color: var(--text-sec);">
+        Nhấp chuột hoặc chạm tay vào phím nốt tương ứng để thổi sáo
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px;">
+      
+      <button type="button" class="virtual-flute-key" data-note="Đô" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #ef4444; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #ef4444;">Đô 1</div>
+        <div style="font-size: 0.72rem; color: #fca5a5; font-weight: 700; margin-top: 2px;">Phím 1</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">●●●●●●</div>
+      </button>
+
+      <button type="button" class="virtual-flute-key" data-note="Rê" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #f97316; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #f97316;">Rê 1</div>
+        <div style="font-size: 0.72rem; color: #fdba74; font-weight: 700; margin-top: 2px;">Phím 2</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">●●●●●○</div>
+      </button>
+
+      <button type="button" class="virtual-flute-key" data-note="Mi" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #eab308; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #eab308;">Mi 1</div>
+        <div style="font-size: 0.72rem; color: #fde047; font-weight: 700; margin-top: 2px;">Phím 3</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">●●●●○○</div>
+      </button>
+
+      <button type="button" class="virtual-flute-key" data-note="Fa" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #22c55e; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #22c55e;">Fa 1</div>
+        <div style="font-size: 0.72rem; color: #86efac; font-weight: 700; margin-top: 2px;">Phím 4</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">●●●○○○</div>
+      </button>
+
+      <button type="button" class="virtual-flute-key" data-note="Sol" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #06b6d4; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #06b6d4;">Sol 1</div>
+        <div style="font-size: 0.72rem; color: #67e8f9; font-weight: 700; margin-top: 2px;">Phím 5</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">●●○○○○</div>
+      </button>
+
+      <button type="button" class="virtual-flute-key" data-note="La" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #3b82f6; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #3b82f6;">La 1</div>
+        <div style="font-size: 0.72rem; color: #93c5fd; font-weight: 700; margin-top: 2px;">Phím 6</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">●○○○○○</div>
+      </button>
+
+      <button type="button" class="virtual-flute-key" data-note="Si" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #a855f7; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #a855f7;">Si 1</div>
+        <div style="font-size: 0.72rem; color: #d8b4fe; font-weight: 700; margin-top: 2px;">Phím 7</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">○○○○○○</div>
+      </button>
+
+      <button type="button" class="virtual-flute-key" data-note="Đô 2" style="background: linear-gradient(180deg, #27211b 0%, #17130f 100%); border: 1.5px solid #ec4899; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.12s ease;">
+        <div style="font-size: 1.15rem; font-weight: 900; color: #ec4899;">Đô 2</div>
+        <div style="font-size: 0.72rem; color: #f472b6; font-weight: 700; margin-top: 2px;">Phím 8</div>
+        <div style="font-size: 0.65rem; color: var(--text-sec); margin-top: 3px;">○●●●●●</div>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ── CARD NGHE LẠI BẢN THU ÂM CỦA BẠN ── -->
+  <div id="recording-playback-card" style="display: none; margin-top: 16px; background: rgba(30, 41, 59, 0.85); border: 2px solid #38bdf8; border-radius: var(--radius-md); padding: 18px 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h3 style="color: #38bdf8; font-size: 1.05rem; font-weight: 800; margin: 0 0 4px 0; display: flex; align-items: center; gap: 8px;">
+          <span>🎧</span> BẢN THU ÂM TIẾNG SÁO CỦA BẠN ĐÃ SẴN SÀNG!
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-sec); margin: 0;">
+          Lắng nghe lại chính âm sắc, độ rung hơi và nhịp điệu của bạn để tự đánh giá tiến bộ.
+        </p>
+      </div>
+      <div>
+        <a id="recorded-audio-download" class="btn btn-secondary" style="background: var(--surface2); color: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; gap: 6px;" download="Ban_Thoi_Sao_Cua_Toi.webm">
+          <span>⬇️</span> Tải Bản Thu (.webm)
+        </a>
+      </div>
+    </div>
+    <audio id="recorded-audio-player" controls style="width: 100%; margin-top: 14px; border-radius: 8px;"></audio>
+  </div>
+
+  <!-- ── KHỐI HƯỚNG DẪN CHI TIẾT & MẸO HỌC SÁO DÂN GIAN ── -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; margin-top: 18px;">
+    
+    <!-- Hướng dẫn Khổ Nhạc Đi Ngang & Cây Sáo 3D -->
+    <div class="card p-18" style="background: var(--surface); border: 1px solid rgba(230, 162, 60, 0.25); border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.02rem; font-weight: 800; color: #ffd700; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px;">
+        <span>🎋</span> Cây Sáo Trúc 3D & Khổ Nhạc 5 Dòng Kẻ
+      </h3>
+      <ul style="margin: 0; padding-left: 20px; font-size: 0.86rem; color: var(--text-sec); line-height: 1.65;">
+        <li><strong>Cây Sáo Trúc 3D trực quan:</strong> Nhìn ngay phía dưới khuông nhạc, 6 lỗ sáo sẽ sáng đèn màu cam chỉ dẫn chính xác lỗ nào cần bịt, lỗ nào cần mở theo từng nốt sắp tới!</li>
+        <li><strong>Phản hồi xanh ngọc (Emerald):</strong> Khi bạn thổi trúng nốt, các lỗ sáo tương ứng sẽ bừng sáng màu xanh ngọc bích cực kỳ đẹp mắt.</li>
+        <li><strong>Đầu nốt nhạc 3D & Lời ca:</strong> Đặt chính xác trên 5 dòng kẻ kèm lời bài hát trong ngoặc kép và tên nốt tiếng Việt rõ nét.</li>
+        <li><strong>Bộ gõ nhịp Metronome (Tắc - Tùng):</strong> Giúp bạn giữ nhịp chuẩn phách 1 và phách 2 của nhịp 2/4.</li>
+      </ul>
+    </div>
+
+    <!-- Mẹo Luyện Hơi Thở & Bấm Ngón Dẻo -->
+    <div class="card p-18" style="background: var(--surface); border: 1px solid rgba(88, 166, 255, 0.25); border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.02rem; font-weight: 800; color: #58a6ff; margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px;">
+        <span>💡</span> Lời Khuyên Từ Nghệ Nhân Dân Gian
+      </h3>
+      <ul style="margin: 0; padding-left: 20px; font-size: 0.86rem; color: var(--text-sec); line-height: 1.65;">
+        <li><strong>Kim đo cao độ (Cents Offset):</strong> Khi kim nằm ở vùng màu xanh lá giữa là âm chuẩn. Nếu kim lệch về bên trái (Non hơi), bạn hãy gom môi và thổi mạnh thêm một chút. Nếu kim lệch về bên phải (Già hơi), hãy xoay nhẹ mép sáo vào trong.</li>
+        <li><strong>Tính năng Luyện Câu (A-B Looper):</strong> Bật nút <code>[🔁 Lặp Đoạn]</code> để bài hát tự động quay vòng, giúp bạn tập dẻo ngón một câu khó mà không phải bấm lại từ đầu.</li>
+        <li><strong>Thu âm kiểm tra tiếng sáo:</strong> Bật nút <code>[🎙️ Thu Âm]</code> để nghe lại tiếng thổi thật của mình, so sánh với tiếng mẫu sáo chuẩn để tiến bộ nhanh chóng.</li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ── MODAL SOUNDCHECK VICTORY (MÔ PHỎNG CHUẨN XÁC ẢNH 2) ── -->
+<div id="game-victory-modal" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
+  <div class="modal-card" style="max-width: 520px; width: 94%; text-align: center; border: 1.5px solid rgba(255, 255, 255, 0.18); box-shadow: 0 16px 50px rgba(0,0,0,0.85); background: #ffffff; color: #1e293b; border-radius: 16px; padding: 28px 24px; position: relative;">
+    
+    <!-- Nút đóng góc phải -->
+    <button id="victory-btn-close-x" type="button" onclick="document.getElementById('game-victory-modal').style.display='none';" style="position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 1.35rem; color: #64748b; cursor: pointer; font-weight: 800;">✕</button>
+
+    <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-top: 4px; margin-bottom: 2px;">
+      Good job! Try playing the whole assignment
+    </h2>
+    <div id="victory-song-title" style="color: #64748b; font-weight: 700; font-size: 0.88rem; margin-bottom: 20px;">Lý Cây Đa (Dân Ca Bắc Bộ)</div>
+
+    <!-- 1. VÒNG TRÒN SCORE LỚN TRUNG TÂM (ẢNH 2) -->
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;">
+      <div style="font-size: 0.72rem; font-weight: 800; color: #64748b; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px;">SCORE</div>
+      
+      <div style="position: relative; width: 110px; height: 110px;">
+        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+          <circle cx="50" cy="50" r="45" stroke="#f1f5f9" stroke-width="8" fill="none" />
+          <circle id="sc-ring-score-circle" cx="50" cy="50" r="45" stroke="#f97316" stroke-width="8" fill="none" stroke-dasharray="282.7" stroke-dashoffset="14" stroke-linecap="round" style="transition: stroke-dashoffset 0.8s ease;" />
+        </svg>
+        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <span id="victory-final-score" style="font-size: 2.1rem; font-weight: 900; color: #ea580c; line-height: 1;">97</span>
+          <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700; margin-top: 2px;">of 100</span>
+        </div>
+      </div>
+
+      <div id="victory-stars" style="color: #f59e0b; font-size: 1.15rem; letter-spacing: 3px; margin-top: 8px;">★★★★★</div>
+    </div>
+
+    <!-- 2. HÀNG 3 VÒNG TRÒN CHỈ SỐ SOUNDCHECK (LENGTH PLAYED, PITCH SCORE, RHYTHM SCORE) -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; padding: 16px 8px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+      
+      <!-- LENGTH PLAYED -->
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <span style="font-size: 0.65rem; font-weight: 800; color: #64748b; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px;">LENGTH PLAYED</span>
+        <div style="position: relative; width: 72px; height: 72px;">
+          <svg viewBox="0 0 80 80" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+            <circle cx="40" cy="40" r="32" stroke="#e2e8f0" stroke-width="6" fill="none" />
+            <circle id="sc-ring-length-circle" cx="40" cy="40" r="32" stroke="#ef4444" stroke-width="6" fill="none" stroke-dasharray="201" stroke-dashoffset="30" stroke-linecap="round" style="transition: stroke-dashoffset 0.8s ease;" />
+          </svg>
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+            <span id="sc-length-score" style="font-size: 1.25rem; font-weight: 900; color: #334155;">92</span><span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">%</span>
+          </div>
+        </div>
+        <div style="color: #cbd5e1; font-size: 0.82rem; letter-spacing: 2px; margin-top: 4px;">★★★★★</div>
+      </div>
+
+      <!-- PITCH SCORE -->
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <span style="font-size: 0.65rem; font-weight: 800; color: #64748b; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px;">PITCH SCORE</span>
+        <div style="position: relative; width: 72px; height: 72px;">
+          <svg viewBox="0 0 80 80" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+            <circle cx="40" cy="40" r="32" stroke="#e2e8f0" stroke-width="6" fill="none" />
+            <circle id="sc-ring-pitch-circle" cx="40" cy="40" r="32" stroke="#16a34a" stroke-width="6" fill="none" stroke-dasharray="201" stroke-dashoffset="15" stroke-linecap="round" style="transition: stroke-dashoffset 0.8s ease;" />
+          </svg>
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+            <span id="sc-pitch-score" style="font-size: 1.25rem; font-weight: 900; color: #16a34a;">97</span><span style="font-size: 0.75rem; font-weight: 700; color: #16a34a;">%</span>
+          </div>
+        </div>
+        <div style="color: #f59e0b; font-size: 0.82rem; letter-spacing: 2px; margin-top: 4px;">★★★★★</div>
+      </div>
+
+      <!-- RHYTHM SCORE -->
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <span style="font-size: 0.65rem; font-weight: 800; color: #64748b; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px;">RHYTHM SCORE</span>
+        <div style="position: relative; width: 72px; height: 72px;">
+          <svg viewBox="0 0 80 80" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+            <circle cx="40" cy="40" r="32" stroke="#e2e8f0" stroke-width="6" fill="none" />
+            <circle id="sc-ring-rhythm-circle" cx="40" cy="40" r="32" stroke="#16a34a" stroke-width="6" fill="none" stroke-dasharray="201" stroke-dashoffset="15" stroke-linecap="round" style="transition: stroke-dashoffset 0.8s ease;" />
+          </svg>
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+            <span id="sc-rhythm-score" style="font-size: 1.25rem; font-weight: 900; color: #16a34a;">95</span><span style="font-size: 0.75rem; font-weight: 700; color: #16a34a;">%</span>
+          </div>
+        </div>
+        <div style="color: #f59e0b; font-size: 0.82rem; letter-spacing: 2px; margin-top: 4px;">★★★★★</div>
+      </div>
+
+    </div>
+
+    <!-- Chi tiết phụ (ẩn danh) -->
+    <div style="display: none;">
+      <span id="victory-score"></span>
+      <span id="victory-rank"></span>
+      <span id="victory-max-combo"></span>
+      <span id="victory-accuracy"></span>
+      <span id="victory-perfect"></span>
+      <span id="victory-good"></span>
+      <span id="victory-miss"></span>
+    </div>
+
+    <!-- Hàng nút thao tác -->
+    <div style="display: flex; gap: 12px; justify-content: center;">
+      <button id="victory-btn-replay" type="button" class="btn btn-primary" style="background: #0f172a; color: #fff; font-weight: 800; padding: 11px 28px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.95rem;">
+        🔄 Thử Thách Lại
+      </button>
+      <button id="victory-btn-close" type="button" class="btn btn-secondary" style="background: #f1f5f9; color: #334155; font-weight: 700; padding: 11px 22px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer; font-size: 0.95rem;">
+        Đóng
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/practice.js?v=20261109_v8_pdfscore"></script>
+<script src="/static/flute_game.js?v=20261109_v8_pdfscore"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Modal vinh danh game
+    const btnReplay = document.getElementById('victory-btn-replay');
+    const btnCloseVic = document.getElementById('victory-btn-close');
+    const modalVic = document.getElementById('game-victory-modal');
+    if (btnCloseVic && modalVic) {
+      btnCloseVic.addEventListener('click', () => {
+        modalVic.classList.remove('open');
+        modalVic.style.display = 'none';
+      });
+    }
+    if (btnReplay && modalVic) {
+      btnReplay.addEventListener('click', () => {
+        modalVic.classList.remove('open');
+        modalVic.style.display = 'none';
+        if (window.fluteGame) {
+          window.fluteGame.startGame();
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

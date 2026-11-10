@@ -1,0 +1,166 @@
+{
+  "ten_sao": "Sáo Sol",
+  "am_goc": "G",
+  "mo_ta": "Sáo trúc 6 lỗ giọng Sol — loại nhỏ gọn, âm thanh cao và trong. Phổ biến trong nhạc đệm nhanh và các bài dân ca vùng cao. Phù hợp cho người học đã nắm vững sáo Đô hoặc Rê.",
+  "do_kho": "Trung bình - Nâng cao",
+  "tan_so_co_ban_hz": 392.00,
+  "ghi_chu_am_co_ban": "Sol4 (G4) — tất cả lỗ đều bịt kín, thổi nhẹ",
+  "cach_phan_biet_quang": "Sáo Sol có âm vực cao hơn sáo Đô và Rê. Quãng 1 bắt đầu từ Sol4 (392 Hz) khi thổi nhẹ 6 lỗ bịt kín. Quãng 2 bắt đầu từ Sol5 (784 Hz) khi thổi mạnh cùng thế bấm. Do âm thanh cao và nhạy cảm, sáo Sol đòi hỏi kỹ thuật hơi chính xác hơn — chênh lệch nhỏ trong lực hơi có thể làm âm vỡ hoặc lạc quãng. Hãy luyện kỹ Quãng 1 ít nhất 2 tuần trước khi chuyển sang Quãng 2.",
+  "bang_bam": [
+    {
+      "ten_quang": "Quãng 1 (Thổi nhẹ)",
+      "cac_not": [
+        {
+          "note_viet": "Sol",
+          "note_western": "G",
+          "octave": 4,
+          "frequency_hz": 392.00,
+          "holes": [true, true, true, true, true, true],
+          "blow_strength": "nhe",
+          "fingering_desc": "Bịt kín cả 6 lỗ, thổi nhẹ. Nốt căn bản của sáo Sol."
+        },
+        {
+          "note_viet": "La",
+          "note_western": "A",
+          "octave": 4,
+          "frequency_hz": 440.00,
+          "holes": [true, true, true, true, true, false],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở lỗ 6 (ngón út tay phải), giữ 5 lỗ còn lại bịt kín."
+        },
+        {
+          "note_viet": "Si",
+          "note_western": "B",
+          "octave": 4,
+          "frequency_hz": 493.88,
+          "holes": [true, true, true, true, false, false],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở lỗ 5 và lỗ 6, giữ 4 lỗ trên bịt kín."
+        },
+        {
+          "note_viet": "Đô",
+          "note_western": "C",
+          "octave": 5,
+          "frequency_hz": 523.25,
+          "holes": [true, true, true, false, true, true],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở lỗ 4, bịt lỗ 5 và lỗ 6. Thế bấm Đô tự nhiên — cần luyện để giữ ổn định."
+        },
+        {
+          "note_viet": "Rê",
+          "note_western": "D",
+          "octave": 5,
+          "frequency_hz": 587.33,
+          "holes": [true, true, true, false, false, false],
+          "blow_strength": "nhe",
+          "fingering_desc": "Bịt 3 lỗ trên (lỗ 1, 2, 3), mở 3 lỗ dưới (lỗ 4, 5, 6)."
+        },
+        {
+          "note_viet": "Mi",
+          "note_western": "E",
+          "octave": 5,
+          "frequency_hz": 659.25,
+          "holes": [true, true, false, false, false, false],
+          "blow_strength": "nhe",
+          "fingering_desc": "Bịt 2 lỗ trên (lỗ 1, 2), mở 4 lỗ dưới."
+        },
+        {
+          "note_viet": "Fa#",
+          "note_western": "F#",
+          "octave": 5,
+          "frequency_hz": 739.99,
+          "holes": [true, false, false, false, false, false],
+          "blow_strength": "nhe",
+          "fingering_desc": "Chỉ bịt lỗ 1, mở 5 lỗ còn lại. Sáo Sol tự nhiên ra Fa thăng."
+        },
+        {
+          "note_viet": "Sol",
+          "note_western": "G",
+          "octave": 5,
+          "frequency_hz": 783.99,
+          "holes": [false, false, false, false, false, false],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở tất cả 6 lỗ, thổi nhẹ. Nốt Sol cao đóng Quãng 1."
+        }
+      ]
+    },
+    {
+      "ten_quang": "Quãng 2 (Thổi mạnh)",
+      "ghi_chu": "Giữ nguyên thế bấm như Quãng 1, tăng lực hơi và siết môi — âm nhảy lên một quãng 8. Sáo Sol Quãng 2 rất cao, cần luyện tập lâu dài.",
+      "cac_not": [
+        {
+          "note_viet": "Sol",
+          "note_western": "G",
+          "octave": 5,
+          "frequency_hz": 783.99,
+          "holes": [true, true, true, true, true, true],
+          "blow_strength": "manh",
+          "fingering_desc": "Bịt kín cả 6 lỗ, thổi mạnh."
+        },
+        {
+          "note_viet": "La",
+          "note_western": "A",
+          "octave": 5,
+          "frequency_hz": 880.00,
+          "holes": [true, true, true, true, true, false],
+          "blow_strength": "manh",
+          "fingering_desc": "Mở lỗ 6, thổi mạnh."
+        },
+        {
+          "note_viet": "Si",
+          "note_western": "B",
+          "octave": 5,
+          "frequency_hz": 987.77,
+          "holes": [true, true, true, true, false, false],
+          "blow_strength": "manh",
+          "fingering_desc": "Mở lỗ 5 và lỗ 6, thổi mạnh."
+        },
+        {
+          "note_viet": "Đô",
+          "note_western": "C",
+          "octave": 6,
+          "frequency_hz": 1046.50,
+          "holes": [true, true, true, false, true, true],
+          "blow_strength": "manh",
+          "fingering_desc": "Thế bấm Đô tự nhiên, thổi mạnh."
+        },
+        {
+          "note_viet": "Rê",
+          "note_western": "D",
+          "octave": 6,
+          "frequency_hz": 1174.66,
+          "holes": [true, true, true, false, false, false],
+          "blow_strength": "manh",
+          "fingering_desc": "Bịt 3 lỗ trên, mở 3 lỗ dưới, thổi mạnh."
+        },
+        {
+          "note_viet": "Mi",
+          "note_western": "E",
+          "octave": 6,
+          "frequency_hz": 1318.51,
+          "holes": [true, true, false, false, false, false],
+          "blow_strength": "manh",
+          "fingering_desc": "Bịt 2 lỗ trên, mở 4 lỗ dưới, thổi mạnh."
+        },
+        {
+          "note_viet": "Fa#",
+          "note_western": "F#",
+          "octave": 6,
+          "frequency_hz": 1479.98,
+          "holes": [true, false, false, false, false, false],
+          "blow_strength": "manh",
+          "fingering_desc": "Chỉ bịt lỗ 1, thổi mạnh. Âm rất cao, cần kiểm soát hơi tốt."
+        },
+        {
+          "note_viet": "Sol",
+          "note_western": "G",
+          "octave": 6,
+          "frequency_hz": 1567.98,
+          "holes": [false, false, false, false, false, false],
+          "blow_strength": "manh",
+          "fingering_desc": "Mở tất cả 6 lỗ, thổi mạnh. Nốt cao nhất thông thường của sáo Sol."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,513 @@
+{% extends "base.html" %}
+
+{% block title %}Tổng quan — Học Sáo Trúc Việt Nam{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fadein" style="padding-bottom: 8px;">
+  <div>
+    <div style="display: flex; gap: 8px; margin-bottom: 6px;">
+      <span class="badge badge-orange text-xs" style="background: rgba(230, 162, 60, 0.2); color: #fde68a; border: 1px solid rgba(230, 162, 60, 0.4);">🎋 DÂN CA & SÁO TRÚC DÂN TỘC</span>
+      <span class="badge badge-green text-xs">TRUYỀN THỐNG VIỆT NAM</span>
+    </div>
+    <h1 class="page-title" style="font-size: 1.85rem; font-weight: 900; color: #fff;">
+      Chào mừng bạn đến với HọcSáo 🎋
+    </h1>
+    <p class="page-subtitle" style="font-size: 0.95rem; color: var(--text-sec); margin-top: 4px;">
+      Ứng dụng đồng hành học sáo trúc Việt Nam — Luyện hơi thở, chuẩn ngón bấm, thăng hoa cùng giai điệu quê hương.
+    </p>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- ── Thẻ Lời Khuyên Từ Nghệ Nhân Dân Gian (Mentor Tip) ── -->
+  <div class="mentor-tip-card animate-fadein">
+    <div style="font-size: 2.2rem; line-height: 1;">💡</div>
+    <div style="flex: 1;">
+      <b style="color: #ffd700; font-size: 0.98rem; display: block; margin-bottom: 4px;">Lời khuyên từ Nghệ nhân sáo trúc:</b>
+      <p style="margin: 0; font-size: 0.88rem; color: #fef3c7; line-height: 1.55;">
+        "Để tiếng sáo trong và vang, mỗi ngày bạn hãy dành 15 phút tập <strong>thổi nốt ngân dài (long tone)</strong> và <strong>luyện thang âm ngũ cung</strong>. 
+        Đừng quên vào <strong>Game Thổi Sáo</strong> để luyện nhịp điệu với khổ nhạc 5 dòng kẻ và cây sáo trúc 3D trực quan!"
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Action Cards ── -->
+  <section aria-labelledby="action-title" class="mb-24">
+    <h2 id="action-title" class="text-sec text-sm fw-700 mb-16" style="text-transform:uppercase;letter-spacing:.08em;">Khám phá các phòng học</h2>
+    <div class="grid-4 gap-16">
+
+      <a href="/ly-thuyet" class="card action-card accent2 animate-fadein animate-fadein-d1" aria-label="Học lý thuyết sáo trúc">
+        <span class="action-icon" aria-hidden="true">📚</span>
+        <span class="action-title">Lý thuyết</span>
+        <span class="action-desc">Ký âm sáo, cấu tạo cây sáo 6 lỗ, cách đặt môi, lấy hơi bụng và kỹ thuật rung hơi</span>
+        <span class="badge badge-blue mt-8">{{ lesson_count | default(0) }} bài học</span>
+      </a>
+
+      <a href="/thuc-hanh" class="card action-card accent animate-fadein animate-fadein-d2" aria-label="Thực hành thổi sáo">
+        <span class="action-icon" aria-hidden="true">🎶</span>
+        <span class="action-title">Phòng Thực Hành</span>
+        <span class="action-desc">Luyện từng nốt sáo với mô hình cây sáo lớn, nhận diện cao độ và follow-along Lý Cây Đa</span>
+        <span class="badge badge-red mt-8">Phản hồi tức thì</span>
+      </a>
+
+      <a href="/game" class="card action-card animate-fadein animate-fadein-d3" aria-label="Game thổi sáo theo bài hát" style="border: 1.5px solid #e6a23c; background: linear-gradient(135deg, rgba(230, 162, 60, 0.16) 0%, var(--surface) 100%);">
+        <span class="action-icon" aria-hidden="true">🎮</span>
+        <span class="action-title">Game Thổi Sáo</span>
+        <span class="action-desc">Khổ nhạc 5 dòng kẻ cuộn ngang, cây sáo trúc 3D chỉ ngón bấm, 6 bài dân ca, thu âm & nghe lại</span>
+        <span class="badge badge-orange mt-8" style="background:#e6a23c;color:#000;font-weight:900;">CỰC HOT 🔥</span>
+      </a>
+
+      <a href="/cai-dat" class="card action-card neutral animate-fadein animate-fadein-d3" aria-label="Cài đặt ứng dụng">
+        <span class="action-icon" aria-hidden="true">⚙️</span>
+        <span class="action-title">Cài đặt</span>
+        <span class="action-desc">Chọn tone sáo (C5, A4, G4...), độ nhạy micro và tùy chỉnh giao diện tre trúc</span>
+        <span class="badge badge-gray mt-8">Tuỳ chỉnh</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── 1. MODULE 3: HOẠT ĐỘNG TUẦN & LỊCH CHUYÊN CẦN HEATMAP (MÔ PHỎNG CHUẨN XÁC ẢNH 3) ── -->
+  <section class="mb-32 animate-fadein">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;">
+      
+      <!-- CARD TRÁI: HOẠT ĐỘNG TUẦN (ACTIVIDAD SEMANAL) -->
+      <div class="card p-24" style="background: #11141a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: space-between;">
+        
+        <div>
+          <!-- Header & Badge tiến độ -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin: 0;">Hoạt động tuần</h3>
+              <span style="font-size: 0.78rem; color: #64748b;">Thời lượng thổi sáo từng ngày</span>
+            </div>
+            <span style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); font-weight: 800; font-size: 0.75rem; padding: 4px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px;">
+              ↗ +153% so với tuần trước
+            </span>
+          </div>
+
+          <!-- 3 Chỉ số đầu bảng (Tổng tuần, Trung bình ngày, Ngày chăm nhất) -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 12px; margin-bottom: 30px;">
+            <div>
+              <div id="weekly-total-mins" style="font-size: 1.85rem; font-weight: 900; color: #fff; line-height: 1.1;">48 m</div>
+              <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 2px;">Tổng tuần</div>
+            </div>
+            <div>
+              <div id="weekly-avg-mins" style="font-size: 1.85rem; font-weight: 900; color: #fff; line-height: 1.1;">16 m</div>
+              <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 2px;">Trung bình ngày</div>
+            </div>
+            <div>
+              <div id="weekly-best-day" style="font-size: 1.45rem; font-weight: 900; color: #facc15; line-height: 1.2;">Thứ Tư</div>
+              <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 2px;">Ngày chăm nhất</div>
+            </div>
+          </div>
+
+          <!-- Biểu đồ cột 7 ngày (Thứ 2 đến Chủ nhật) với cột Thứ 4 phát sáng vàng neon (Ảnh 3) -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; height: 160px; padding: 0 10px 10px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+            
+            <!-- T2 (L) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 34px;">
+              <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">7</span>
+              <div style="width: 28px; height: 26px; background: #eab308; border-radius: 6px;"></div>
+              <span style="font-size: 0.75rem; color: #64748b; font-weight: 800;">L</span>
+            </div>
+
+            <!-- T3 (M) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 34px;">
+              <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">1</span>
+              <div style="width: 28px; height: 10px; background: #eab308; border-radius: 4px;"></div>
+              <span style="font-size: 0.75rem; color: #64748b; font-weight: 800;">M</span>
+            </div>
+
+            <!-- T4 (X) - CỘT VÀNG PHÁT SÁNG NỔI BẬT (ẢNH 3) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 34px;">
+              <span style="font-size: 0.78rem; color: #fde047; font-weight: 900;">40</span>
+              <div style="width: 28px; height: 110px; background: linear-gradient(180deg, #fde047 0%, #eab308 100%); border-radius: 6px; box-shadow: 0 0 16px rgba(250, 204, 21, 0.65);"></div>
+              <span style="font-size: 0.75rem; color: #facc15; font-weight: 900;">X</span>
+            </div>
+
+            <!-- T5 (J) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 34px;">
+              <span style="font-size: 0.72rem; color: #475569;">·</span>
+              <div style="width: 28px; height: 4px; background: #334155; border-radius: 2px;"></div>
+              <span style="font-size: 0.75rem; color: #64748b; font-weight: 800;">J</span>
+            </div>
+
+            <!-- T6 (V) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 34px;">
+              <span style="font-size: 0.72rem; color: #475569;">·</span>
+              <div style="width: 28px; height: 4px; background: #334155; border-radius: 2px;"></div>
+              <span style="font-size: 0.75rem; color: #64748b; font-weight: 800;">V</span>
+            </div>
+
+            <!-- T7 (S) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 34px;">
+              <span style="font-size: 0.72rem; color: #475569;">·</span>
+              <div style="width: 28px; height: 4px; background: #334155; border-radius: 2px;"></div>
+              <span style="font-size: 0.75rem; color: #64748b; font-weight: 800;">S</span>
+            </div>
+
+            <!-- CN (D) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 34px;">
+              <span style="font-size: 0.72rem; color: #475569;">·</span>
+              <div style="width: 28px; height: 4px; background: #334155; border-radius: 2px;"></div>
+              <span style="font-size: 0.75rem; color: #64748b; font-weight: 800;">D</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Dòng động viên dưới chân biểu đồ -->
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 18px; color: #94a3b8; font-size: 0.82rem; font-style: italic;">
+          <span style="color: #facc15; font-style: normal;">📈</span>
+          <span>Bạn đã chăm chỉ hơn tuần trước. Hãy giữ vững nhịp độ này!</span>
+        </div>
+
+      </div>
+
+      <!-- CARD PHẢI: LỊCH CHĂM CHỈ THÁNG HEATMAP (ẢNH 3) -->
+      <div class="card p-24" style="background: #11141a; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        
+        <!-- Header tháng & Nút thêm phiên thủ công -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button type="button" style="background: #1e2430; border: none; color: #94a3b8; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;">‹</button>
+            <div>
+              <h3 id="cal-month-title" style="font-size: 1.15rem; font-weight: 800; color: #fff; margin: 0;">Tháng 11 2026</h3>
+              <div id="cal-studied-days-count" style="font-size: 0.76rem; color: #94a3b8;">19 ngày đã luyện sáo</div>
+            </div>
+            <button type="button" style="background: #1e2430; border: none; color: #94a3b8; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;">›</button>
+          </div>
+
+          <button type="button" onclick="alert('Đã ghi nhận buổi tập sáo hôm nay vào lịch chăm chỉ!');" style="background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.3); color: #facc15; font-size: 0.78rem; font-weight: 700; padding: 6px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+            + Điểm danh buổi tập
+          </button>
+        </div>
+
+        <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 14px;">
+          👆 Chạm vào một ngày để xem chi tiết buổi tập
+        </div>
+
+        <!-- Hàng thứ: L, M, X, J, V, S, D -->
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin-bottom: 8px; font-size: 0.72rem; font-weight: 800; color: #64748b;">
+          <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
+        </div>
+
+        <!-- Lưới 30 ngày (Ô màu vàng là ngày đã học như Ảnh 3) -->
+        <div id="calendar-heatmap-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;">
+          <!-- 1-5 (Tuần 1) -->
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">1</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">2</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">3</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">4</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">5</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">6</div>
+          <div style="background: #713f12; color: #fde047; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">7</div>
+
+          <!-- 8-14 (Tuần 2) -->
+          <div style="background: #facc15; color: #000; font-weight: 900; font-size: 0.85rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);">8</div>
+          <div style="background: #facc15; color: #000; font-weight: 900; font-size: 0.85rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);">9</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">10</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">11</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">12</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">13</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">14</div>
+
+          <!-- 15-21 (Tuần 3) -->
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">15</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">16</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">17</div>
+          <div style="background: #facc15; color: #000; font-weight: 900; font-size: 0.85rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);">18</div>
+          <div style="background: #ca8a04; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">19</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">20</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">21</div>
+
+          <!-- 22-28 (Tuần 4) -->
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">22</div>
+          <div style="background: #854d0e; color: #fef08a; font-weight: 800; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">23</div>
+          <div style="background: #facc15; color: #000; font-weight: 900; font-size: 0.85rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);">24</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">25</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">26</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">27</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">28</div>
+
+          <!-- 29-30 (Tuần 5) -->
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">29</div>
+          <div style="background: #1e2430; color: #64748b; font-weight: 700; font-size: 0.8rem; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">30</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 2. MODULE 4: LỘ TRÌNH HỌC SÁO GAMIFIED (LEVEL ROADMAP - MÔ PHỎNG CHUẨN XÁC ẢNH 4) ── -->
+  <section class="mb-32 animate-fadein">
+    <div class="card p-24" style="background: #0d121d; border: 1.5px solid rgba(88, 166, 255, 0.25); border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden;">
+      
+      <!-- Header Lộ trình -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h2 style="font-size: 1.55rem; font-weight: 900; color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.6rem;">🗺️</span> Lộ Trình Luyện Sáo Trúc (Level Roadmap)
+          </h2>
+          <span style="font-size: 0.84rem; color: #94a3b8;">Hành trình từng bước chinh phục 12 bài tập sáo trúc từ cơ bản đến kiệt tác dân tộc</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 8px; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.35); padding: 6px 14px; border-radius: 999px;">
+          <span style="color: #4ade80; font-size: 0.82rem; font-weight: 800;">Tiến Độ: 67% Hoàn Thành (8/12 Bài)</span>
+        </div>
+      </div>
+
+      <!-- ĐƯỜNG UỐN LƯỢN SINH ĐỘNG ROADMAP (SERPENTINE PATH SVG - ẢNH 4) -->
+      <div style="position: relative; width: 100%; min-height: 220px; overflow-x: auto; padding: 20px 0;">
+        <svg viewBox="0 0 1000 180" style="width: 100%; min-width: 850px; height: 180px;">
+          <!-- Đường cong uốn lượn nền xám -->
+          <path d="M 40,90 Q 120,20 200,90 T 360,90 T 520,90 T 680,90 T 840,90 T 960,90" fill="none" stroke="#1e293b" stroke-width="8" stroke-linecap="round" />
+          <!-- Đoạn đường đã hoàn thành màu xanh ngọc phát sáng -->
+          <path d="M 40,90 Q 120,20 200,90 T 360,90 T 520,90 T 680,90" fill="none" stroke="#10b981" stroke-width="8" stroke-linecap="round" style="filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6));" />
+
+          <!-- NÚT 1: Sol 1 (Done) -->
+          <g transform="translate(60, 60)" style="cursor: pointer;" onclick="selectRoadmapNode(1, 'Nốt Sol 1 (G4)', 'Nốt dễ nhất để phát ra tiếng sáo trong trẻo đầu tiên. Bịt kín lỗ 1 và 2 tay trái.', 'C4-D4-E4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">1</text>
+            <text x="0" y="-25" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">Sol 1</text>
+          </g>
+
+          <!-- NÚT 2: La 1 (Done) -->
+          <g transform="translate(140, 35)" style="cursor: pointer;" onclick="selectRoadmapNode(2, 'Nốt La 1 (A4)', 'Chỉ bịt duy nhất lỗ 1, mở 5 lỗ còn lại. Chuẩn 440Hz.', 'A4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">2</text>
+            <text x="0" y="-25" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">La 1</text>
+          </g>
+
+          <!-- NÚT 3: Si 1 (Done) -->
+          <g transform="translate(220, 110)" style="cursor: pointer;" onclick="selectRoadmapNode(3, 'Nốt Si 1 (B4)', 'Mở toàn bộ 6 lỗ sáo, giữ thăng bằng bằng môi và hai ngón cái.', 'B4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">3</text>
+            <text x="0" y="30" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">Si 1</text>
+          </g>
+
+          <!-- NÚT 4: Sib (Done) -->
+          <g transform="translate(300, 35)" style="cursor: pointer;" onclick="selectRoadmapNode(4, 'Nốt Si Giáng 1 (Bb4)', 'Nốt phái sinh chuẩn bảng phấn: Mở lỗ 1, bịt lỗ 2 và 3, mở lỗ 4, 5, 6.', 'Bb4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">4</text>
+            <text x="0" y="-25" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">Si giáng</text>
+          </g>
+
+          <!-- NÚT 5: Đô 2 (Done) -->
+          <g transform="translate(380, 110)" style="cursor: pointer;" onclick="selectRoadmapNode(5, 'Nốt Đô 2 (C5 - Mở ngón 1)', 'Mở lỗ 1, bịt kín 5 lỗ 2..6 và tăng nhẹ tốc độ hơi.', 'C5', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">5</text>
+            <text x="0" y="30" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">Đô 2</text>
+          </g>
+
+          <!-- NÚT 6: Fa 1 (Done) -->
+          <g transform="translate(460, 35)" style="cursor: pointer;" onclick="selectRoadmapNode(6, 'Nốt Fa 1 (F4)', 'Bịt kín 3 lỗ trên (tay trái), mở cả 3 lỗ dưới (tay phải).', 'F4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">6</text>
+            <text x="0" y="-25" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">Fa 1</text>
+          </g>
+
+          <!-- NÚT 7: Mi 1 (Done) -->
+          <g transform="translate(540, 110)" style="cursor: pointer;" onclick="selectRoadmapNode(7, 'Nốt Mi 1 (E4)', 'Bịt kín 4 lỗ trên (1, 2, 3, 4), mở lỗ 5 và 6.', 'E4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">7</text>
+            <text x="0" y="30" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">Mi 1</text>
+          </g>
+
+          <!-- NÚT 8: Rê 1 (Done) -->
+          <g transform="translate(620, 35)" style="cursor: pointer;" onclick="selectRoadmapNode(8, 'Nốt Rê 1 (D4)', 'Bịt 5 lỗ (1, 2, 3, 4, 5), chỉ mở duy nhất lỗ 6.', 'D4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#10b981" stroke="#fff" stroke-width="2.5" />
+            <text x="0" y="5" text-anchor="middle" fill="#fff" font-weight="900" font-size="12">8</text>
+            <text x="0" y="-25" text-anchor="middle" fill="#94a3b8" font-weight="700" font-size="10">Rê 1</text>
+          </g>
+
+          <!-- NÚT 9: Đô Trầm (CURRENT - PHÁT SÁNG VÀNG) -->
+          <g transform="translate(700, 110)" style="cursor: pointer;" onclick="selectRoadmapNode(9, 'Nốt Đô 1 (C4 - Trầm Nhất)', 'Bịt kín toàn bộ cả 6 lỗ sáo. Thổi luồng hơi ấm, êm ái xuống đáy lỗ.', 'C4', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="23" fill="#facc15" stroke="#fff" stroke-width="3" style="filter: drop-shadow(0 0 12px #facc15);" />
+            <text x="0" y="5" text-anchor="middle" fill="#000" font-weight="900" font-size="14">9</text>
+            <text x="0" y="34" text-anchor="middle" fill="#facc15" font-weight="900" font-size="11">Đô Trầm</text>
+          </g>
+
+          <!-- NÚT 10: Thang Âm 9 Nốt (Locked) -->
+          <g transform="translate(780, 35)" style="cursor: pointer;" onclick="selectRoadmapNode(10, 'Thang Âm 9 Nốt Toàn Diện', 'Chuỗi 9 nốt liền mạch: Đô 1 -> Rê 1 -> Mi 1 -> Fa 1 -> Sol 1 -> La 1 -> Si 1 -> Sib -> Đô 2.', 'Scale', '/thuc-hanh');">
+            <circle cx="0" cy="0" r="19" fill="#1e293b" stroke="#475569" stroke-width="2" />
+            <text x="0" y="5" text-anchor="middle" fill="#94a3b8" font-weight="800" font-size="12">10</text>
+            <text x="0" y="-25" text-anchor="middle" fill="#64748b" font-weight="700" font-size="10">Thang Âm</text>
+          </g>
+
+          <!-- NÚT 11: Đồ Rê Mi Đồ (Locked) -->
+          <g transform="translate(860, 110)" style="cursor: pointer;" onclick="selectRoadmapNode(11, 'Giai Điệu Vỡ Lòng: Đồ — Rê — Mi — Đồ', 'Bài tập vỡ lòng chuyển ngón linh hoạt 4 nốt đầu tiên.', 'Melody', '/game');">
+            <circle cx="0" cy="0" r="19" fill="#1e293b" stroke="#475569" stroke-width="2" />
+            <text x="0" y="5" text-anchor="middle" fill="#94a3b8" font-weight="800" font-size="12">11</text>
+            <text x="0" y="30" text-anchor="middle" fill="#64748b" font-weight="700" font-size="10">Đồ Rê Mi</text>
+          </g>
+
+          <!-- NÚT 12: Lý Cây Đa (Cúp Vàng Đỉnh Cao) -->
+          <g transform="translate(940, 50)" style="cursor: pointer;" onclick="selectRoadmapNode(12, 'Lý Cây Đa (Dân Ca Quan Họ Bắc Bộ)', 'Kiệt tác dân tộc hoàn chỉnh theo bản nhạc PDF gốc. Nhịp 2/4 · Tempo 90 BPM.', 'Song', '/game');">
+            <circle cx="0" cy="0" r="22" fill="#1e293b" stroke="#ffd700" stroke-width="2.5" />
+            <text x="0" y="6" text-anchor="middle" fill="#ffd700" font-weight="900" font-size="14">👑</text>
+            <text x="0" y="-28" text-anchor="middle" fill="#ffd700" font-weight="900" font-size="10">Lý Cây Đa</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- THẺ BÀI HỌC TƯƠNG TÁC (INTERACTIVE LEVEL CARD - MÔ PHỎNG CHUẨN XÁC ẢNH 4) -->
+      <div id="roadmap-active-card" style="background: rgba(18, 24, 38, 0.95); border: 1.5px solid rgba(255, 255, 255, 0.14); border-radius: 16px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        
+        <div style="flex: 1; min-width: 280px;">
+          <div style="font-size: 0.75rem; font-weight: 800; color: #4ade80; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;">
+            BẮT ĐẦU LUYỆN TẬP: <span id="rm-card-level-num">CẤP 9</span>
+          </div>
+          <h3 id="rm-card-title" style="font-size: 1.35rem; font-weight: 900; color: #fff; margin: 0 0 6px 0;">
+            Nốt Đô 1 (C4 - Trầm Nhất)
+          </h3>
+          <p id="rm-card-desc" style="font-size: 0.85rem; color: #94a3b8; line-height: 1.5; margin: 0;">
+            Nốt Đô trầm đòi hỏi bịt thật kín cả 6 lỗ sáo bằng phần thịt mềm đầu ngón tay. Thổi luồng hơi ấm, êm ái hướng xuống đáy lỗ thổi.
+          </p>
+        </div>
+
+        <!-- Đoạn xem trước khuông nhạc (Sheet Music Preview) -->
+        <div style="background: #ffffff; padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center;">
+          <svg width="140" height="48" viewBox="0 0 140 48">
+            <!-- 5 Dòng kẻ -->
+            <line x1="5" y1="8" x2="135" y2="8" stroke="#334155" stroke-width="1" />
+            <line x1="5" y1="16" x2="135" y2="16" stroke="#334155" stroke-width="1" />
+            <line x1="5" y1="24" x2="135" y2="24" stroke="#334155" stroke-width="1" />
+            <line x1="5" y1="32" x2="135" y2="32" stroke="#334155" stroke-width="1" />
+            <line x1="5" y1="40" x2="135" y2="40" stroke="#334155" stroke-width="1" />
+            <!-- Khóa Sol mini -->
+            <text x="8" y="32" font-size="24" fill="#0f172a" font-family="serif">𝄞</text>
+            <!-- Nốt nhạc minh họa -->
+            <line x1="60" y1="44" x2="80" y2="44" stroke="#0f172a" stroke-width="1.5" />
+            <ellipse cx="70" cy="44" rx="5" ry="3.8" fill="#0f172a" transform="rotate(-15, 70, 44)" />
+            <line x1="74" y1="44" x2="74" y2="20" stroke="#0f172a" stroke-width="1.4" />
+            <!-- Nốt 2 -->
+            <ellipse cx="110" cy="36" rx="5" ry="3.8" fill="#0f172a" transform="rotate(-15, 110, 36)" />
+            <line x1="114" y1="36" x2="114" y2="14" stroke="#0f172a" stroke-width="1.4" />
+          </svg>
+        </div>
+
+        <!-- Nút Play tròn to phong cách Ảnh 4 -->
+        <div>
+          <a id="rm-card-btn-play" href="/thuc-hanh" class="btn" style="width: 58px; height: 58px; border-radius: 50%; background: #f97316; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.55); border: 2.5px solid #fff; transition: transform 0.15s ease;">
+            ▶
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Quick Start ── -->
+  <div class="grid-2 gap-24 mt-24">
+
+    <section aria-labelledby="quickstart-title">
+      <h2 id="quickstart-title" class="text-sec text-sm fw-700 mb-16" style="text-transform:uppercase;letter-spacing:.08em;">3 Bước bắt đầu thổi sáo</h2>
+      <div class="steps-list">
+
+        <div class="step-item animate-fadein animate-fadein-d1">
+          <div class="step-num" aria-hidden="true">1</div>
+          <div>
+            <div class="step-title">Chọn loại sáo của bạn</div>
+            <div class="step-desc">Mặc định là Sáo Đô (C5) — loại sáo phổ biến nhất cho người mới bắt đầu tại Việt Nam</div>
+          </div>
+        </div>
+
+        <div class="step-item animate-fadein animate-fadein-d2">
+          <div class="step-num" aria-hidden="true">2</div>
+          <div>
+            <div class="step-title">Tập bấm ngón & gom môi</div>
+            <div class="step-desc">Xem sơ đồ thế bấm 6 lỗ và đặt môi nghiêng 45 độ qua lỗ thổi để tạo luồng âm</div>
+          </div>
+        </div>
+
+        <div class="step-item animate-fadein animate-fadein-d3">
+          <div class="step-num" aria-hidden="true">3</div>
+          <div>
+            <div class="step-title">Thổi sáo & Nhận phản hồi</div>
+            <div class="step-desc">Hệ thống phân tích cao độ và độ chuẩn của hơi thở để giúp bạn tiến bộ từng ngày</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Hoạt động gần đây ── -->
+    <section aria-labelledby="activity-title">
+      <h2 id="activity-title" class="text-sec text-sm fw-700 mb-16" style="text-transform:uppercase;letter-spacing:.08em;">Giai điệu nổi bật nên thử</h2>
+      <div class="card" style="padding: 16px 20px;">
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+          <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+            <div>
+              <b style="color: #ffd700;">Lý Cây Đa</b>
+              <div style="font-size: 0.8rem; color: var(--text-sec);">Dân ca Quan họ Bắc Bộ · Nhịp 2/4</div>
+            </div>
+            <a href="/game" class="btn btn-secondary text-xs" style="padding: 5px 12px; font-weight: 700;">Chơi ngay ➔</a>
+          </li>
+          <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+            <div>
+              <b style="color: #67e8f9;">Bèo Dạt Mây Trôi</b>
+              <div style="font-size: 0.8rem; color: var(--text-sec);">Dân ca trữ tình Bắc Ninh · Luyện hơi dài</div>
+            </div>
+            <a href="/game" class="btn btn-secondary text-xs" style="padding: 5px 12px; font-weight: 700;">Chơi ngay ➔</a>
+          </li>
+          <li style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <b style="color: #f97316;">Trống Cơm</b>
+              <div style="font-size: 0.8rem; color: var(--text-sec);">Dân ca Bắc Bộ · Tiết tấu rộn rã vui tươi</div>
+            </div>
+            <a href="/game" class="btn btn-secondary text-xs" style="padding: 5px 12px; font-weight: 700;">Chơi ngay ➔</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  function selectRoadmapNode(level, title, desc, notes, targetUrl) {
+    document.getElementById('rm-card-level-num').textContent = `CẤP ${level}`;
+    document.getElementById('rm-card-title').textContent = title;
+    document.getElementById('rm-card-desc').textContent = desc;
+    const playBtn = document.getElementById('rm-card-btn-play');
+    if (playBtn) playBtn.href = targetUrl;
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Nạp dữ liệu thống kê tuần & Lịch Heatmap chuyên cần (Ảnh 3)
+    try {
+      const resWeekly = await fetch('/api/hoat-dong-tuan');
+      if (resWeekly.ok) {
+        const data = await resWeekly.json();
+        if (data.weekly) {
+          const w = data.weekly;
+          const totalEl = document.getElementById('weekly-total-mins');
+          if (totalEl) totalEl.textContent = `${w.totalMinutes} m`;
+          const avgEl = document.getElementById('weekly-avg-mins');
+          if (avgEl) avgEl.textContent = `${w.dailyAvgMinutes} m`;
+          const bestEl = document.getElementById('weekly-best-day');
+          if (bestEl) bestEl.textContent = w.bestDay;
+        }
+        if (data.calendar) {
+          const c = data.calendar;
+          const titleEl = document.getElementById('cal-month-title');
+          if (titleEl) titleEl.textContent = c.monthName;
+          const countEl = document.getElementById('cal-studied-days-count');
+          if (countEl) countEl.textContent = `${c.totalDaysStudied} ngày đã luyện sáo`;
+        }
+      }
+    } catch (e) {
+      console.warn('Không thể nạp dữ liệu hoạt động tuần:', e);
+    }
+  });
+</script>
+{% endblock %}

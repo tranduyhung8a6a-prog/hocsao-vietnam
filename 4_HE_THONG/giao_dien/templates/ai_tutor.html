@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}Gia Sư AI & Phân Tích Bài Hát{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fadein" style="margin-bottom: 20px;">
+  <div>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span class="badge badge-green">GIA SƯ AI THÔNG MINH</span>
+      <span class="badge badge-orange">ADAPTIVE LEARNING</span>
+      <span class="badge badge-blue">PHÂN TÍCH NHẠC LIBROSA</span>
+    </div>
+    <h1 class="page-title" style="font-size: 1.85rem; font-weight: 800; color: #fff;">
+      🧠 Gia Sư AI & Phòng Phân Tích Bài Hát
+    </h1>
+    <p class="page-subtitle" style="font-size: 0.95rem; color: var(--text-sec); max-width: 820px;">
+      Theo dõi toàn diện quá trình học, chẩn đoán điểm yếu từng nốt sáo, tự động thiết kế bài tập củng cố 5 phút và bóc tách giai điệu từ bất kỳ file nhạc nào thành cảm âm sáo trúc.
+    </p>
+  </div>
+</div>
+
+<div class="page-body" style="display: flex; flex-direction: column; gap: 24px;">
+
+  <!-- ── 1. BÀI TẬP PHỤC HỒI 5 PHÚT DO AI THIẾT KẾ RIÊNG ── -->
+  <div class="card p-20 animate-fadein" style="background: linear-gradient(135deg, rgba(88, 166, 255, 0.1) 0%, rgba(15, 23, 42, 0.95) 100%); border: 2px solid var(--accent); border-radius: var(--radius-lg); box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span class="badge badge-orange text-xs" style="font-weight: 800;">LỘ TRÌNH THÍCH ỨNG HÔM NAY</span>
+          <span class="badge badge-green text-xs" id="routine-duration-badge">Thời lượng: 5 phút</span>
+        </div>
+        <h2 style="font-size: 1.35rem; font-weight: 900; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;" id="routine-title">
+          <span>🎯</span> Bài Tập Củng Cố 5 Phút: Khắc Phục Nốt Đô 1 & Fa 1
+        </h2>
+      </div>
+
+      <a href="/thuc-hanh" class="btn btn-primary" style="background: var(--accent); color: #fff; font-weight: 800; padding: 10px 22px; border-radius: var(--radius-md); text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(247, 129, 102, 0.45); font-size: 0.92rem;">
+        <span>Bắt Đầu Luyện Ngay</span> ➔
+      </a>
+    </div>
+
+    <!-- 3 Bước trong bài tập phục hồi -->
+    <div id="routine-steps-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 16px;">
+      
+      <div class="card p-14" style="background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span class="badge badge-blue text-xs">BƯỚC 1 · 1.5 PHÚT</span>
+          <span style="font-size: 0.75rem; color: var(--text-sec);">Khởi động</span>
+        </div>
+        <strong style="color: #fff; font-size: 0.92rem; display: block; margin-bottom: 4px;" id="step-1-title">Luyện Hơi Dài (Long Tone) Nốt Đô 1</strong>
+        <p style="font-size: 0.8rem; color: var(--text-sec); margin: 0; line-height: 1.45;" id="step-1-goal">
+          Thổi 3 hơi dài (mỗi hơi 4 giây), giữ kim đồng hồ Tuner dao động trong phạm vi ±10 cent.
+        </p>
+      </div>
+
+      <div class="card p-14" style="background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span class="badge badge-green text-xs">BƯỚC 2 · 1.5 PHÚT</span>
+          <span style="font-size: 0.75rem; color: var(--text-sec);">Chuyển ngón</span>
+        </div>
+        <strong style="color: #fff; font-size: 0.92rem; display: block; margin-bottom: 4px;" id="step-2-title">Chuyển Ngón Liền Kề: Fa 1 ➔ Đô 1</strong>
+        <p style="font-size: 0.8rem; color: var(--text-sec); margin: 0; line-height: 1.45;" id="step-2-goal">
+          Thổi luân phiên giữa 2 nốt, chú ý miết chặt mép ngón tay khi chuyển về nốt mục tiêu.
+        </p>
+      </div>
+
+      <div class="card p-14" style="background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span class="badge badge-orange text-xs">BƯỚC 3 · 2.0 PHÚT</span>
+          <span style="font-size: 0.75rem; color: var(--text-sec);">Thử thách</span>
+        </div>
+        <strong style="color: #fff; font-size: 0.92rem; display: block; margin-bottom: 4px;" id="step-3-title">Thử Thách Game SoundCheck</strong>
+        <p style="font-size: 0.8rem; color: var(--text-sec); margin: 0; line-height: 1.45;" id="step-3-goal">
+          Vào Game SoundCheck chơi đoạn nhạc mẫu chứa nốt này và đạt từ 80 điểm trở lên.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Lời khuyên ân cần từ thầy sáo AI -->
+    <div style="padding: 12px 16px; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 1.5rem;">👨‍🏫</span>
+      <div style="font-size: 0.85rem; color: #fde047; line-height: 1.45;" id="teacher-encouragement">
+        Chăm chỉ luyện 5 phút bài tập này mỗi ngày sẽ giúp ngón tay của bạn bịt kín nốt Đô 1 một cách tự nhiên và hơi thổi tròn vành rõ tiếng!
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── 2. MA TRẬN NĂNG LỰC NỐT NHẠC (NOTE COMPETENCY MATRIX) ── -->
+  <div class="card p-20 animate-fadein" style="background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg);">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <span>📊</span> Ma Trận Năng Lực 9 Nốt Sáo Cơ Bản
+        </h2>
+        <div style="font-size: 0.82rem; color: var(--text-sec); margin-top: 2px;">
+          Hệ thống ghi nhận điểm số, độ lệch cent và phân loại trình độ từng nốt từ các buổi tập thực tế.
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; font-size: 0.75rem;">
+        <span style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></span> Thành thạo (≥85đ)</span>
+        <span style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #38bdf8;"></span> Khá (70-84đ)</span>
+        <span style="display: flex; align-items: center; gap: 5px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span> Cần rèn luyện (&lt;70đ)</span>
+      </div>
+    </div>
+
+    <!-- Bảng ma trận nốt -->
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border); color: var(--text-sec); font-size: 0.75rem; text-transform: uppercase;">
+            <th style="padding: 10px 12px;">Nốt Sáo</th>
+            <th style="padding: 10px 12px;">Số Lần Luyện</th>
+            <th style="padding: 10px 12px;">Điểm Trung Bình</th>
+            <th style="padding: 10px 12px;">Độ Lệch Cent TB</th>
+            <th style="padding: 10px 12px;">Đánh Giá Năng Lực</th>
+            <th style="padding: 10px 12px; text-align: right;">Hành Động</th>
+          </tr>
+        </thead>
+        <tbody id="note-matrix-tbody">
+          <!-- Render động từ API /api/ai-tutor/chan-doan -->
+          <tr><td colspan="6" style="padding: 20px; text-align: center; color: var(--text-sec);">Đang tải dữ liệu năng lực học viên...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ── 3. PHÒNG PHÂN TÍCH FILE NHẠC & BÓC TÁCH CẢM ÂM (LOI_BAI_HAT) ── -->
+  <div class="card p-20 animate-fadein" style="background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg);">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span class="badge badge-blue text-xs">MODULE LOI_BAI_HAT</span>
+          <span class="badge badge-orange text-xs">LIBROSA / YIN ALGORITHM</span>
+        </div>
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <span>🎼</span> Trích Xuất Cảm Âm & Tạo Bài Tập Từ File Nhạc Bất Kỳ
+        </h2>
+        <div style="font-size: 0.82rem; color: var(--text-sec); margin-top: 2px;">
+          Tải lên file thu âm sáo (WAV / MP3) hoặc thử với bài mẫu. AI sẽ tự động phân tích BPM, bóc tách cao độ và tạo thành bài chơi trong Game SoundCheck!
+        </div>
+      </div>
+    </div>
+
+    <!-- Khu vực tải file & Chạy phân tích -->
+    <div style="display: grid; grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.4fr); gap: 20px; align-items: start;">
+      
+      <!-- Box tải file -->
+      <div style="display: flex; flex-direction: column; gap: 12px; background: var(--surface2); padding: 18px; border-radius: 12px; border: 1px solid var(--border);">
+        <label style="font-weight: 700; font-size: 0.88rem; color: #fff;">1. Chọn File Âm Thanh Hoặc Bài Mẫu:</label>
+        
+        <input type="file" id="song-file-input" accept=".wav,.mp3,.ogg,.m4a" style="display: block; font-size: 0.82rem; color: var(--text-sec); padding: 8px; background: rgba(0,0,0,0.2); border-radius: 6px; border: 1px dashed var(--border); cursor: pointer;">
+        
+        <div style="font-size: 0.78rem; color: var(--text-sec); text-align: center;">--- HOẶC ---</div>
+
+        <button type="button" id="btn-use-sample-song" class="btn btn-secondary" style="padding: 9px 14px; font-weight: 700; font-size: 0.85rem; border-radius: var(--radius-md); background: rgba(88, 166, 255, 0.1); border: 1px solid var(--accent2); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🎋</span> Phân tích bài mẫu "Lý Cây Đa" (Sáo chuẩn)
+        </button>
+
+        <button type="button" id="btn-run-song-analysis" class="btn btn-primary" style="background: var(--accent); color: #fff; font-weight: 800; padding: 11px 18px; border-radius: var(--radius-md); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; box-shadow: 0 4px 14px rgba(247, 129, 102, 0.4);">
+          <span>🔍</span> Bắt Đầu Bóc Tách Bằng AI
+        </button>
+      </div>
+
+      <!-- Kết quả bóc tách bài hát -->
+      <div id="song-analysis-result" style="background: rgba(0,0,0,0.3); padding: 18px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-weight: 700; color: #fff; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between;">
+          <span>📋 Kết Quả Phân Tích & Cảm Âm Sáo Trúc:</span>
+          <span id="analysis-status-badge" class="badge badge-gray text-xs">Chờ tải file</span>
+        </div>
+
+        <div id="analysis-content-placeholder" style="color: var(--text-sec); font-size: 0.85rem; padding: 20px 0; text-align: center;">
+          Hãy chọn file âm thanh và bấm <strong>"Bắt Đầu Bóc Tách Bằng AI"</strong> để xem kết quả.
+        </div>
+
+        <div id="analysis-details" style="display: none; flex-direction: column; gap: 10px;">
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <div class="stat-chip" style="padding: 6px 12px; background: var(--surface2); border-radius: 6px;">
+              <span class="stat-label">Tốc độ:</span>
+              <strong id="res-bpm" style="color: var(--accent);">90.0 BPM</strong>
+            </div>
+            <div class="stat-chip" style="padding: 6px 12px; background: var(--surface2); border-radius: 6px;">
+              <span class="stat-label">Tổng số nốt:</span>
+              <strong id="res-total-notes" style="color: var(--success);">0 nốt</strong>
+            </div>
+            <div class="stat-chip" style="padding: 6px 12px; background: var(--surface2); border-radius: 6px;">
+              <span class="stat-label">Nhịp:</span>
+              <strong id="res-time-sig">2/4</strong>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-sec); font-weight: 700;">DÃY CẢM ÂM TRUYỀN THỐNG (1 2 3 4 5 6 7):</label>
+            <div id="res-cam-am" style="font-family: monospace; font-size: 0.95rem; font-weight: 700; color: #fde047; padding: 10px 14px; background: #060b13; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-top: 4px; word-break: break-all;">
+              ---
+            </div>
+          </div>
+
+          <a id="btn-play-in-game" href="/game" class="btn btn-primary" style="background: #22c55e; color: #fff; font-weight: 800; padding: 10px 16px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);">
+            <span>🎮 Nạp Vào Game SoundCheck & Chơi Ngay</span> ➔
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Tải dữ liệu chẩn đoán học viên từ backend
+  try {
+    const res = await fetch('/api/ai-tutor/chan-doan');
+    if (res.ok) {
+      const data = await res.json();
+      renderTutorData(data);
+    }
+  } catch (err) {
+    console.warn('Lỗi tải dữ liệu chẩn đoán AI:', err);
+  }
+
+  function renderTutorData(data) {
+    const { recovery_routine, note_matrix } = data;
+
+    // Render bài tập phục hồi
+    if (recovery_routine) {
+      document.getElementById('routine-title').innerHTML = `<span>🎯</span> ${recovery_routine.title}`;
+      document.getElementById('teacher-encouragement').textContent = recovery_routine.teacher_encouragement;
+      
+      const steps = recovery_routine.steps || [];
+      if (steps[0]) {
+        document.getElementById('step-1-title').textContent = steps[0].title;
+        document.getElementById('step-1-goal').textContent = steps[0].goal;
+      }
+      if (steps[1]) {
+        document.getElementById('step-2-title').textContent = steps[1].title;
+        document.getElementById('step-2-goal').textContent = steps[1].goal;
+      }
+      if (steps[2]) {
+        document.getElementById('step-3-title').textContent = steps[2].title;
+        document.getElementById('step-3-goal').textContent = steps[2].goal;
+      }
+    }
+
+    // Render Ma trận nốt
+    const tbody = document.getElementById('note-matrix-tbody');
+    if (tbody && note_matrix && note_matrix.length > 0) {
+      tbody.innerHTML = note_matrix.map(n => {
+        let badgeColor = '#94a3b8';
+        if (n.status_color === 'green') badgeColor = '#22c55e';
+        else if (n.status_color === 'blue') badgeColor = '#38bdf8';
+        else if (n.status_color === 'orange') badgeColor = '#f59e0b';
+
+        return `
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+            <td style="padding: 10px 12px; font-weight: 700; color: #fff;">${n.note}</td>
+            <td style="padding: 10px 12px; color: var(--text-sec);">${n.practiced_count} lần</td>
+            <td style="padding: 10px 12px; font-weight: 700; color: ${n.average_score >= 80 ? '#22c55e' : (n.average_score >= 60 ? '#f59e0b' : '#ef4444')};">
+              ${n.practiced_count > 0 ? n.average_score + ' đ' : '--'}
+            </td>
+            <td style="padding: 10px 12px; color: var(--text-sec);">
+              ${n.practiced_count > 0 ? (n.average_cents > 0 ? '+' : '') + n.average_cents + ' c' : '--'}
+            </td>
+            <td style="padding: 10px 12px;">
+              <span class="badge" style="background: rgba(255,255,255,0.06); border: 1px solid ${badgeColor}; color: ${badgeColor}; font-weight: 700;">
+                ${n.status}
+              </span>
+            </td>
+            <td style="padding: 10px 12px; text-align: right;">
+              <a href="/thuc-hanh/not/${encodeURIComponent(n.note)}" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.82rem;">
+                Luyện nốt ➔
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
+
+  // 2. Xử lý phân tích file nhạc
+  const btnSample = document.getElementById('btn-use-sample-song');
+  const btnAnalyze = document.getElementById('btn-run-song-analysis');
+  const fileInput = document.getElementById('song-file-input');
+  const placeholder = document.getElementById('analysis-content-placeholder');
+  const details = document.getElementById('analysis-details');
+  const statusBadge = document.getElementById('analysis-status-badge');
+
+  async function analyzeAudio(formData) {
+    statusBadge.textContent = 'Đang bóc tách...';
+    statusBadge.className = 'badge badge-orange text-xs';
+    placeholder.style.display = 'block';
+    placeholder.textContent = '⏳ Trí tuệ nhân tạo đang phân tích BPM, bóc tách cao độ và chuyển thành cảm âm...';
+    details.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/loi-bai-hat/tai-len-phan-tich', {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        const data = await res.json();
+        placeholder.style.display = 'none';
+        details.style.display = 'flex';
+        statusBadge.textContent = 'Thành công';
+        statusBadge.className = 'badge badge-green text-xs';
+
+        document.getElementById('res-bpm').textContent = `${data.tempo_bpm} BPM`;
+        document.getElementById('res-total-notes').textContent = `${data.tong_so_not} nốt`;
+        document.getElementById('res-time-sig').textContent = data.nhip || '2/4';
+        document.getElementById('res-cam-am').textContent = data.cam_am || '1 - 2 - 3 - 5 - 6';
+
+        if (data.id) {
+          document.getElementById('btn-play-in-game').href = `/game?song=${encodeURIComponent(data.id)}`;
+        }
+      } else {
+        throw new Error('Server returned ' + res.status);
+      }
+    } catch (err) {
+      placeholder.style.display = 'block';
+      placeholder.innerHTML = `<span style="color: #ef4444;">❌ Lỗi phân tích: ${err.message}. Hãy thử lại với file WAV hoặc bài mẫu.</span>`;
+      statusBadge.textContent = 'Lỗi';
+      statusBadge.className = 'badge badge-red text-xs';
+    }
+  }
+
+  if (btnSample) {
+    btnSample.addEventListener('click', () => {
+      // Gửi dạng JSON chuẩn để hoạt động ngay cả khi máy chưa cài python-multipart
+      analyzeAudioJson({ use_sample: 'ly_cay_da' });
+    });
+  }
+
+  async function analyzeAudioJson(payload) {
+    statusBadge.textContent = 'Đang bóc tách...';
+    statusBadge.className = 'badge badge-orange text-xs';
+    placeholder.style.display = 'block';
+    placeholder.textContent = '⏳ Trí tuệ nhân tạo đang phân tích BPM, bóc tách cao độ và chuyển thành cảm âm...';
+    details.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/loi-bai-hat/tai-len-phan-tich', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        placeholder.style.display = 'none';
+        details.style.display = 'flex';
+        statusBadge.textContent = 'Thành công';
+        statusBadge.className = 'badge badge-green text-xs';
+
+        document.getElementById('res-bpm').textContent = `${data.tempo_bpm} BPM`;
+        document.getElementById('res-total-notes').textContent = `${data.tong_so_not} nốt`;
+        document.getElementById('res-time-sig').textContent = data.nhip || '2/4';
+        document.getElementById('res-cam-am').textContent = data.cam_am || '1 - 2 - 3 - 5 - 6';
+
+        if (data.id) {
+          document.getElementById('btn-play-in-game').href = `/game?song=${encodeURIComponent(data.id)}`;
+        }
+      } else {
+        throw new Error('Server returned ' + res.status);
+      }
+    } catch (err) {
+      placeholder.style.display = 'block';
+      placeholder.innerHTML = `<span style="color: #ef4444;">❌ Lỗi phân tích: ${err.message}. Hãy thử lại với file WAV hoặc bài mẫu.</span>`;
+      statusBadge.textContent = 'Lỗi';
+      statusBadge.className = 'badge badge-red text-xs';
+    }
+  }
+
+  if (btnAnalyze) {
+    btnAnalyze.addEventListener('click', () => {
+      if (!fileInput.files || fileInput.files.length === 0) {
+        // Nếu không có file thì tự động dùng bài mẫu
+        const fd = new FormData();
+        fd.append('use_sample', 'ly_cay_da');
+        analyzeAudio(fd);
+        return;
+      }
+      const fd = new FormData();
+      fd.append('file', fileInput.files[0]);
+      analyzeAudio(fd);
+    });
+  }
+});
+</script>
+{% endblock %}

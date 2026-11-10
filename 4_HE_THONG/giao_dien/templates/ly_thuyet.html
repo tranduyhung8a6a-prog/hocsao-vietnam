@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Lý Thuyết Sáo Trúc{% endblock %}
+
+{% block content %}
+<!-- ── HEADER LỘ TRÌNH HỌC TẬP ── -->
+<div class="page-header animate-fadein" style="margin-bottom: 24px;">
+  <div>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span class="badge badge-blue">GIÁO TRÌNH BÀI BẢN</span>
+      <span class="badge badge-green">100% THEO TÀI LIỆU CHUẨN</span>
+    </div>
+    <h1 class="page-title" style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;">
+      📚 Lộ Trình Lý Thuyết & Kỹ Thuật Sáo Trúc
+    </h1>
+    <p class="page-subtitle" style="font-size: 0.95rem; color: var(--text-sec); margin-top: 4px;">
+      Học nhạc lý sáo trúc từ số 0: Kết hợp hình ảnh bảng phấn, âm thanh mẫu và mô phỏng gõ nhịp trực quan.
+    </p>
+  </div>
+
+  <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    <div class="search-box" style="min-width: 260px;">
+      <input type="text" id="lesson-search" class="form-control" placeholder="🔍 Tìm bài học, nốt nhạc, nhịp..." style="width: 100%; padding: 10px 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md);">
+    </div>
+    <a href="/thuc-hanh" class="btn btn-primary" style="background: var(--accent); color: #fff; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+      <span>🎼</span> Phòng Thực Hành
+    </a>
+  </div>
+</div>
+
+<!-- ── THỐNG KÊ LỘ TRÌNH NHANH ── -->
+<div class="grid-4 gap-16 animate-fadein" style="margin-bottom: 28px;">
+  <div class="card p-16" style="background: linear-gradient(135deg, rgba(88, 166, 255, 0.1) 0%, var(--surface) 100%); border-left: 4px solid var(--accent2);">
+    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-sec); font-weight: 700;">Chặng 1: Nhập Môn</div>
+    <div style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-top: 4px;">4 Yếu Tố Âm Nhạc</div>
+    <div style="font-size: 0.78rem; color: var(--text-sec); margin-top: 2px;">Cao độ, trường độ, cường độ, âm sắc</div>
+  </div>
+  <div class="card p-16" style="background: linear-gradient(135deg, rgba(63, 185, 80, 0.1) 0%, var(--surface) 100%); border-left: 4px solid var(--success);">
+    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-sec); font-weight: 700;">Chặng 2: Khuôn Nhạc</div>
+    <div style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-top: 4px;">15 Nốt Khóa Sol</div>
+    <div style="font-size: 0.78rem; color: var(--text-sec); margin-top: 2px;">Từ Đô 1 đến Đô 3 có âm thanh mẫu</div>
+  </div>
+  <div class="card p-16" style="background: linear-gradient(135deg, rgba(210, 153, 34, 0.1) 0%, var(--surface) 100%); border-left: 4px solid var(--warning);">
+    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-sec); font-weight: 700;">Chặng 3: Nhịp Phách</div>
+    <div style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-top: 4px;">Quy Luật Đập Nhịp</div>
+    <div style="font-size: 0.78rem; color: var(--text-sec); margin-top: 2px;">Nhịp 2/4, 3/4, 4/4 & Đập xuống ↓ Nhấc lên ↑</div>
+  </div>
+  <div class="card p-16" style="background: linear-gradient(135deg, rgba(247, 129, 102, 0.1) 0%, var(--surface) 100%); border-left: 4px solid var(--accent);">
+    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-sec); font-weight: 700;">Chặng 4: Thế Bấm Sáo</div>
+    <div style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-top: 4px;">9 Nốt Bảng Phấn</div>
+    <div style="font-size: 0.78rem; color: var(--text-sec); margin-top: 2px;">Mô phỏng sáo trúc 3D & Thổi theo bài</div>
+  </div>
+</div>
+
+<div class="page-body">
+  {% if lessons and lessons | length > 0 %}
+  <!-- DANH SÁCH BÀI HỌC DẠNG LỘ TRÌNH ĐƯỜNG ĐI (LEARNING TIMELINE) -->
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    {% for lesson in lessons %}
+    <div class="card p-24 lesson-card animate-fadein" data-title="{{ lesson.title | lower }}" style="border: 1px solid var(--border); transition: all 0.25s; border-radius: var(--radius-lg); position: relative; overflow: hidden;">
+      
+      <!-- Dải màu theo thứ tự -->
+      <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 6px; background: {% if loop.index == 1 %}var(--accent2){% elif loop.index == 2 %}var(--warning){% elif loop.index == 3 %}var(--accent){% else %}var(--success){% endif %};"></div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div style="flex: 1; min-width: 280px; padding-left: 12px;">
+          
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <span class="badge" style="background: var(--surface2); color: var(--accent); font-weight: 800; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px;">
+              BÀI {{ "%02d" | format(lesson.order | default(loop.index)) }}
+            </span>
+            <span class="badge {% if lesson.difficulty == 'Thực hành' %}badge-green{% elif lesson.difficulty == 'Nâng cao' %}badge-red{% else %}badge-blue{% endif %} text-xs">
+              {{ lesson.difficulty | default('Cơ bản') }}
+            </span>
+            {% if lesson.estimated_read_time %}
+            <span class="text-xs" style="color: var(--text-sec);">⏱️ {{ lesson.estimated_read_time }}</span>
+            {% endif %}
+          </div>
+
+          <h2 style="font-size: 1.35rem; font-weight: 700; color: #fff; margin-bottom: 8px;">
+            <a href="/ly-thuyet/{{ lesson.slug }}" style="color: inherit; text-decoration: none;">
+              {{ lesson.title }}
+            </a>
+          </h2>
+
+          <p style="color: var(--text-sec); font-size: 0.92rem; line-height: 1.5; margin-bottom: 14px;">
+            {{ lesson.description | default('Nắm vững kiến thức trọng tâm kết hợp với các bộ mô phỏng tương tác thông minh.') }}
+          </p>
+
+          <!-- Tags -->
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            {% if lesson.tags %}
+              {% for tag in lesson.tags %}
+              <span class="badge badge-gray text-xs" style="background: rgba(255,255,255,0.05); color: #cbd5e1;">#{{ tag }}</span>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- 2 Nút hành động nhanh -->
+        <div style="display: flex; flex-direction: column; gap: 8px; min-width: 170px; align-self: center;">
+          <a href="/ly-thuyet/{{ lesson.slug }}" class="btn btn-primary" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); font-weight: 600; padding: 10px 16px; border-radius: var(--radius-md); text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
+            <span>📖</span> Đọc Bài Học →
+          </a>
+          <a href="/thuc-hanh" class="btn btn-secondary" style="background: rgba(247, 129, 102, 0.1); color: var(--accent); border: 1px solid rgba(247, 129, 102, 0.25); font-weight: 600; padding: 8px 16px; border-radius: var(--radius-md); text-decoration: none; text-align: center; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>🎼</span> Thực Hành Luôn
+          </a>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="card p-32 text-center">
+    <div style="font-size: 3rem; margin-bottom: 12px;">📭</div>
+    <h3>Chưa có bài học nào</h3>
+    <p class="text-sec mt-8">Các bài học đang được đồng bộ từ thư mục <code>4_HE_THONG/noi_dung/ly_thuyet/</code>.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('lesson-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.lesson-card');
+        cards.forEach(card => {
+          const text = (card.getAttribute('data-title') || '') + ' ' + card.innerText.toLowerCase();
+          card.style.display = text.includes(query) ? 'block' : 'none';
+        });
+      });
+    }
+  });
+</script>
+{% endblock %}

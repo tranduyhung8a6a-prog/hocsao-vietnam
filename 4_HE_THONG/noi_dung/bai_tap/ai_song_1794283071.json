@@ -1,0 +1,62 @@
+{
+  "id": "ai_song_1794283071",
+  "ten_bai": "Lý Cây Đa (Sáo Trúc Dân Ca)",
+  "do_kho": "Cơ bản",
+  "tempo_bpm": 86.1,
+  "nhip": "4/4",
+  "tong_so_not": 5,
+  "mo_ta": "Bài sáo 'Lý Cây Đa (Sáo Trúc Dân Ca)' được trích xuất tự động bằng AI, nhịp 4/4, tốc độ 86 BPM.",
+  "cam_am": "5  6  1*  2*  3*",
+  "danh_sach_not": [
+    {
+      "note": "Sol 1",
+      "tone": "G",
+      "octave": 4,
+      "time": 0.0,
+      "duration": 0.81,
+      "hole": 2,
+      "viet": "Sol 1",
+      "solfege": "5"
+    },
+    {
+      "note": "La 1",
+      "tone": "A",
+      "octave": 4,
+      "time": 0.81,
+      "duration": 0.57,
+      "hole": 1,
+      "viet": "La 1",
+      "solfege": "6"
+    },
+    {
+      "note": "Đô 2",
+      "tone": "C",
+      "octave": 5,
+      "time": 1.42,
+      "duration": 0.69,
+      "hole": 2,
+      "viet": "Đô 2",
+      "solfege": "1*"
+    },
+    {
+      "note": "Rê 2",
+      "tone": "D",
+      "octave": 5,
+      "time": 2.11,
+      "duration": 0.81,
+      "hole": 5,
+      "viet": "Rê 2",
+      "solfege": "2*"
+    },
+    {
+      "note": "Mi 2",
+      "tone": "E",
+      "octave": 5,
+      "time": 2.92,
+      "duration": 0.94,
+      "hole": 4,
+      "viet": "Mi 2",
+      "solfege": "3*"
+    }
+  ]
+}

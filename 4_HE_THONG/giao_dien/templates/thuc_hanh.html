@@ -1,0 +1,642 @@
+{% extends "base.html" %}
+
+{% block title %}Phòng Thực Hành Sáo Trúc{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fadein" style="margin-bottom: 16px;">
+  <div>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+      <span class="badge badge-green">THỜI GIAN THỰC</span>
+      <span class="badge badge-blue">MẪU SÁO THẬT 100%</span>
+      <span class="badge badge-orange">CHUẨN SÁO ĐÔ (C5)</span>
+    </div>
+    <h1 class="page-title" style="font-size: 1.85rem; font-weight: 800; color: #fff;">
+      🎼 Phòng Thực Hành Thổi Sáo
+    </h1>
+    <p class="page-subtitle" style="font-size: 0.92rem; color: var(--text-sec);">
+      Luyện từng nốt đơn với cây sáo mô phỏng như thật hoặc thực hành bài tập & chơi game theo nhịp (Lý Cây Đa, Đồ Rê Mi Đồ).
+    </p>
+  </div>
+
+  <!-- Thông số phiên -->
+  <div class="session-stats" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+    <div class="stat-chip">
+      <span class="stat-label">Thời gian:</span>
+      <span class="stat-value" id="stat-duration">00:00</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-label">Điểm TB:</span>
+      <span class="stat-value" id="stat-avg-score">--</span>
+    </div>
+    <div class="stat-chip">
+      <span class="status-dot gray" id="status-dot"></span>
+      <span class="stat-value" id="status-label">Chờ bắt đầu</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BANNER CHUYỂN NHANH SANG GAME THỔI SÁO RIÊNG BIỆT ── -->
+<div class="card p-14 animate-fadein" style="margin-bottom: 16px; background: linear-gradient(90deg, rgba(88, 166, 255, 0.12) 0%, rgba(247, 129, 102, 0.12) 100%); border: 1px solid var(--accent); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <span style="font-size: 1.8rem;">🎮</span>
+    <div>
+      <strong style="color: #fff; font-size: 1rem;">Muốn thử thách phản xạ? Game Thổi Sáo Trúc Highway (Piano Tiles) đã tách thành trang riêng!</strong>
+      <div style="font-size: 0.82rem; color: var(--text-sec); margin-top: 2px;">Các nốt trôi theo nhịp điệu bài hát, thổi qua mic hoặc bấm phím 1-8 để bùng nổ combo và tính điểm thành tích!</div>
+    </div>
+  </div>
+  <a href="/game" class="btn btn-primary" style="background: var(--accent); color: #fff; font-weight: 800; padding: 9px 20px; border-radius: var(--radius-md); text-decoration: none; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(247, 129, 102, 0.4); font-size: 0.92rem;">
+    <span>Chơi Game Ngay</span> ➔
+  </a>
+</div>
+
+<!-- ── BẢNG CẢNH BÁO NẾU TRÌNH DUYỆT CHẶN MICROPHONE ── -->
+<div id="mic-permission-banner" style="display: none; margin-bottom: 16px; padding: 14px 18px; border-radius: var(--radius-md); background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; font-size: 0.9rem;"></div>
+
+<!-- ── THANH ĐIỀU KHIỂN & HIỆU CHỈNH MICROPHONE ── -->
+<div class="card p-14 animate-fadein" style="margin-bottom: 18px; background: var(--surface); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+  
+  <!-- Nút Bắt đầu / Dừng -->
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <button id="btn-start" class="btn btn-primary btn-pulse-action" style="background: var(--accent); color: #fff; font-weight: 800; font-size: 0.95rem; padding: 11px 24px; border-radius: var(--radius-md); border: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(247, 129, 102, 0.45); cursor: pointer;">
+      <span aria-hidden="true" style="font-size: 1.15rem;">▶</span> Bắt đầu thổi
+    </button>
+    <button id="btn-stop" class="btn btn-secondary" disabled style="background: var(--surface2); color: var(--text); padding: 11px 18px; border-radius: var(--radius-md); border: 1px solid var(--border); display: flex; align-items: center; gap: 6px; font-weight: 600; cursor: pointer;">
+      <span aria-hidden="true">⏹</span> Dừng
+    </button>
+  </div>
+
+  <!-- Thanh đo âm lượng Mic (VU Meter), Gain slider & Tone Sáo -->
+  <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+    
+    <!-- Âm lượng micro thực tế (VU Meter) -->
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-sec);">
+        <span>🎤 Tín hiệu Mic:</span>
+        <span id="mic-status-text" style="color: var(--success); font-weight: 600;">Sẵn sàng</span>
+      </div>
+      <div style="width: 130px; height: 10px; background: var(--surface2); border-radius: 5px; overflow: hidden; border: 1px solid var(--border);">
+        <div id="mic-vu-fill" style="height: 100%; width: 0%; background: #3fb950; transition: width 0.05s ease-out;"></div>
+      </div>
+    </div>
+
+    <!-- Thanh trượt độ nhạy Mic -->
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-sec);">
+        <span>Độ nhạy Mic:</span>
+        <span id="mic-gain-val" style="color: var(--accent); font-weight: 700;">1.4x</span>
+      </div>
+      <input type="range" id="mic-gain-slider" min="0.5" max="3.0" step="0.1" value="1.4" style="width: 110px; accent-color: var(--accent); cursor: pointer;">
+    </div>
+
+    <!-- Chọn tone sáo & Nút dò tone tự động -->
+    <div style="display: flex; align-items: flex-end; gap: 8px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-sec); gap: 6px;">
+          <span>Tone Cây Sáo Của Bạn:</span>
+          <span id="current-tone-badge" style="color: var(--accent); font-weight: 700;">Sáo Đô (C5)</span>
+        </div>
+        <select id="flute-type-select" class="form-control" style="padding: 6px 10px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+          <option value="C" selected>🎋 Sáo Đô (C5) — Của bạn</option>
+          <option value="A">🎋 Sáo La (A4) — Trầm ấm</option>
+          <option value="G">🎋 Sáo Sol (G4) — Trầm sâu</option>
+          <option value="D">🎋 Sáo Rê (D5) — Cao thanh</option>
+          <option value="B">🎋 Sáo Si (B4) — Tình cảm</option>
+          <option value="Bb">🎋 Sáo Si giáng (Bb4)</option>
+          <option value="F">🎋 Sáo Fa (F4)</option>
+        </select>
+      </div>
+      <button id="btn-auto-detect-flute" type="button" class="btn btn-secondary" style="padding: 7px 12px; background: var(--surface3); border: 1px solid var(--accent); color: var(--accent); font-weight: 700; font-size: 0.8rem; border-radius: var(--radius-md); display: flex; align-items: center; gap: 5px; cursor: pointer;" title="Bịt kín 6 lỗ rồi thổi 1 hơi để máy tự nhận diện tone sáo">
+        <span>🔍</span> Dò Tone
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- ============================================================
+       CHẾ ĐỘ 1: PHÒNG THỰC HÀNH SONG SONG (SPLIT LAYOUT 2 BÊN)
+       ============================================================ -->
+  <div id="section-practice-main" class="animate-fadein">
+    <div class="practice-split-grid">
+      
+      <!-- ── CỘT BÊN TRÁI: TẬP CÁC NỐT & CÂY SÁO MÔ PHỎNG ── -->
+      <div class="practice-col-left" style="display: flex; flex-direction: column; gap: 16px;">
+        
+        <!-- 1. BẢNG 9 NỐT BẤM CĂN BẢN -->
+        <div class="card p-16" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h2 class="text-sm fw-700" style="color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; display: flex; align-items: center; gap: 6px;">
+              <span>🎋</span> 1. Tập Các Nốt (Bấm để đổi nốt & nghe mẫu)
+            </h2>
+            <span class="badge badge-blue text-xs">9 nốt chuẩn file ghi âm</span>
+          </div>
+
+          <!-- 9 Thẻ nốt bấm -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px;">
+            
+            <div class="note-card" data-note="Đô" id="card-Do">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Đô 1">🔊</button>
+              <div class="note-viet">Đô 1</div>
+              <div class="note-west">C · 528Hz</div>
+            </div>
+
+            <div class="note-card" data-note="Rê" id="card-Re">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Rê 1">🔊</button>
+              <div class="note-viet">Rê 1</div>
+              <div class="note-west">D · 600Hz</div>
+            </div>
+
+            <div class="note-card" data-note="Mi" id="card-Mi">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Mi 1">🔊</button>
+              <div class="note-viet">Mi 1</div>
+              <div class="note-west">E · 669Hz</div>
+            </div>
+
+            <div class="note-card" data-note="Fa" id="card-Fa">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Fa 1">🔊</button>
+              <div class="note-viet">Fa 1</div>
+              <div class="note-west">F · 714Hz</div>
+            </div>
+
+            <div class="note-card active" data-note="Sol" id="card-Sol">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Sol 1">🔊</button>
+              <div class="note-viet">Sol 1</div>
+              <div class="note-west">G · 800Hz</div>
+            </div>
+
+            <div class="note-card" data-note="La" id="card-La">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt La 1">🔊</button>
+              <div class="note-viet">La 1</div>
+              <div class="note-west">A · 889Hz</div>
+            </div>
+
+            <div class="note-card" data-note="Si" id="card-Si">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Si 1">🔊</button>
+              <div class="note-viet">Si 1</div>
+              <div class="note-west">B · 998Hz</div>
+            </div>
+
+            <div class="note-card" data-note="Sib" id="card-Sib">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Sib 1">🔊</button>
+              <div class="note-viet">Sib</div>
+              <div class="note-west">Bb · 932Hz</div>
+            </div>
+
+            <div class="note-card" data-note="Đô2" id="card-Do2">
+              <button class="btn-play-preview" title="Nghe mẫu sáo thật nốt Đô 2">🔊</button>
+              <div class="note-viet">Đô 2</div>
+              <div class="note-west">C · 1048Hz</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2. CÂY SÁO MÔ PHỎNG SIÊU THỰC TẾ (PHOTOREALISTIC BAMBOO FLUTE) -->
+        <div class="card p-18" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); position: relative; overflow: hidden;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 800; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span>🎋</span> Cây Sáo Trúc Mô Phỏng: <span id="fingering-note-name" style="color: var(--accent);">Sol 1</span>
+              </h3>
+              <span style="font-size: 0.78rem; color: var(--text-sec);">Được vẽ theo đúng cây sáo ngoài đời thực & chuẩn 9 thế bấm</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <a href="/ai-camera" class="btn btn-primary" style="background: var(--accent); color: #fff; border: none; padding: 5px 12px; font-size: 0.8rem; font-weight: 800; border-radius: var(--radius-md); display: flex; align-items: center; gap: 6px; text-decoration: none; box-shadow: 0 2px 10px rgba(247, 129, 102, 0.45);">
+                <span>📷</span> Mở Camera AI Soi Thế Bấm
+              </a>
+              <button id="btn-view-real-flute"  type="button" class="btn btn-secondary" style="background: var(--surface2); color: var(--accent2); border: 1px solid var(--accent2); padding: 5px 12px; font-size: 0.8rem; font-weight: 700; border-radius: var(--radius-md); display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <span>📷</span> Xem ảnh sáo thật
+              </button>
+              <span class="text-xs" style="color: #cbd5e1; background: var(--surface2); padding: 4px 8px; border-radius: 4px;">
+                🔴 Bịt kín | ⚪ Mở lỗ
+              </span>
+            </div>
+          </div>
+
+          <!-- KHUNG THÂN SÁO TRÚC 3D MÔ PHỎNG SÁO THẬT VIỆT NAM -->
+          <div class="bamboo-flute-container" style="padding: 18px 6px;">
+            <div class="bamboo-flute-body" id="main-flute-body">
+              
+              <!-- Đầu sáo: Nút chặn gỗ mun/gỗ tự nhiên -->
+              <div class="flute-plug-cap" title="Đầu sáo trúc (Bịt gỗ tự nhiên)"></div>
+
+              <!-- Lỗ thổi hình oval chuẩn xác kèm hiệu ứng luồng hơi động -->
+              <div class="flute-mouthpiece" id="flute-mouthpiece-el" title="Lỗ thổi sáo (Đặt môi vào mép lỗ và thổi nhẹ)">
+                <div class="breath-smoke" id="flute-breath-smoke"></div>
+              </div>
+
+              <!-- Thân sáo nứa tự nhiên: Khoảng cách từ lỗ thổi đến lỗ bấm số 1 -->
+              <div class="flute-spacer" style="flex: 1.3;"></div>
+
+              <!-- 6 LỖ BẤM CHUẨN XÁC: CỤM TAY TRÁI (LỖ 1, 2, 3) & CỤM TAY PHẢI (LỖ 4, 5, 6) -->
+              <div class="holes-row" style="display: flex; gap: 14px; align-items: center;">
+                
+                <!-- CỤM TAY TRÁI (GẦN LỖ THỔI NHẤT): LỖ 1, 2, 3 -->
+                <div class="hole-large closed" data-hole="1" id="hole-ui-1" title="Lỗ 1 - Ngón trỏ tay trái (Bấm để nghe thử)">
+                  <span class="hole-label">1</span>
+                  <span class="finger-sublabel">Trỏ T</span>
+                </div>
+                <div class="hole-large closed" data-hole="2" id="hole-ui-2" title="Lỗ 2 - Ngón giữa tay trái">
+                  <span class="hole-label">2</span>
+                  <span class="finger-sublabel">Giữa T</span>
+                </div>
+                <div class="hole-large closed" data-hole="3" id="hole-ui-3" title="Lỗ 3 - Ngón áp út tay trái">
+                  <span class="hole-label">3</span>
+                  <span class="finger-sublabel">Áp út T</span>
+                </div>
+
+                <!-- Khoảng cách tự nhiên phân cách giữa 2 bàn tay -->
+                <div class="hand-gap-spacer" style="width: 22px;" title="Khoảng cách tự nhiên giữa tay trái và tay phải"></div>
+
+                <!-- CỤM TAY PHẢI (GẦN ĐUÔI SÁO): LỖ 4, 5, 6 -->
+                <div class="hole-large open" data-hole="4" id="hole-ui-4" title="Lỗ 4 - Ngón trỏ tay phải">
+                  <span class="hole-label">4</span>
+                  <span class="finger-sublabel">Trỏ P</span>
+                </div>
+                <div class="hole-large open" data-hole="5" id="hole-ui-5" title="Lỗ 5 - Ngón giữa tay phải">
+                  <span class="hole-label">5</span>
+                  <span class="finger-sublabel">Giữa P</span>
+                </div>
+                <div class="hole-large open" data-hole="6" id="hole-ui-6" title="Lỗ 6 - Ngón áp út tay phải (Mở khi thổi nốt Rê)">
+                  <span class="hole-label">6</span>
+                  <span class="finger-sublabel">Áp út P</span>
+                </div>
+
+              </div>
+
+              <!-- Thân sáo kéo dài về phía đuôi -->
+              <div class="flute-spacer" style="flex: 1.1;"></div>
+
+              <!-- Lỗ định âm / Lỗ thoát hơi ở đuôi sáo -->
+              <div class="flute-end-hole" title="Lỗ định âm / Lỗ thoát hơi đuôi sáo"></div>
+
+              <!-- Đuôi sáo mở tự nhiên -->
+              <div class="flute-tail-open" title="Đuôi sáo mở"></div>
+
+            </div>
+          </div>
+
+          <div style="font-size: 0.8rem; color: var(--text-sec); text-align: center; margin-top: 10px; line-height: 1.5;">
+            👉 <strong>Quy ước ngón sáo Việt Nam (Chuẩn Bảng Phấn):</strong> Lỗ 1 (Trỏ T) gần lỗ thổi nhất. Mở nốt <strong>Rê 1</strong> là mở Lỗ 6 (Áp út P). Mở nốt <strong>Đô 2</strong> là mở Lỗ 1 (Trỏ T). Bấm vào lỗ bất kỳ trên cây sáo để nghe thử âm thanh!
+          </div>
+        </div>
+
+        <!-- 3. ĐỒNG HỒ TUNER CHROMATIC CHUYÊN NGHIỆP (PRECISION DIAL TUNER - ẢNH 1) -->
+        <div class="card p-18 arc-tuner-card" style="background: radial-gradient(circle at center, #0f172a 0%, #060b13 100%); border: 1.5px solid rgba(88, 166, 255, 0.35); border-radius: var(--radius-lg); box-shadow: 0 8px 32px rgba(0,0,0,0.65);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.2rem;">🎛️</span>
+              <strong style="font-size: 0.95rem; color: #fff; letter-spacing: 0.03em;">ĐỒNG HỒ ĐO CAO ĐỘ (CHROMATIC TUNER)</strong>
+            </div>
+            <span class="badge badge-blue text-xs" style="font-weight: 700; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #7dd3fc;">Độ chính xác: ±0.1 cent</span>
+          </div>
+
+          <!-- Canvas Dial Tuner (Mô phỏng chân thực Ảnh 1) -->
+          <div style="display: flex; justify-content: center; align-items: center; position: relative; margin: 4px 0 10px 0;">
+            <canvas id="dialTunerCanvas" width="340" height="270" style="max-width: 100%; height: auto; display: block; border-radius: 12px;"></canvas>
+          </div>
+
+          <!-- Trạng thái hướng dẫn thổi -->
+          <div id="note-status" class="note-status" style="font-size: 0.92rem; font-weight: 700; text-align: center; color: var(--text-sec); padding: 6px 12px; background: rgba(0,0,0,0.3); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
+            🎵 Bấm "Bắt đầu thổi" để lắng nghe tiếng sáo của bạn
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── CỘT BÊN PHẢI: THỰC HÀNH BÀI TẬP & GAME VỠ LÒNG ── -->
+      <div class="practice-col-right" style="display: flex; flex-direction: column; gap: 16px;">
+        
+        <!-- KHUNG BÀI TẬP & GAME LUYỆN NỐT -->
+        <div class="card p-20" style="background: linear-gradient(135deg, rgba(88, 166, 255, 0.08) 0%, rgba(22, 27, 34, 0.96) 100%); border: 2px solid var(--accent); border-radius: var(--radius-lg);">
+          
+          <!-- Tiêu đề & Chọn bài tập -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="badge badge-orange text-xs">BÀI TẬP THỰC HÀNH</span>
+                <span class="badge badge-green text-xs" id="song-tempo-badge">Nhịp 2/4 · 90 BPM</span>
+              </div>
+              <h2 style="font-size: 1.35rem; font-weight: 900; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span>🎼</span> 2. Thực Hành Bài Tập & Game Vỡ Lòng
+              </h2>
+            </div>
+
+            <!-- Bộ chọn bài tập -->
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <label for="practice-exercise-select" style="font-size: 0.72rem; color: var(--text-sec); font-weight: 700;">CHỌN BÀI LUYỆN TẬP:</label>
+              <select id="practice-exercise-select" class="form-control" style="padding: 7px 12px; background: var(--surface2); color: var(--text); border: 1px solid var(--accent); border-radius: var(--radius-md); font-weight: 700; font-size: 0.88rem; cursor: pointer;">
+                <option value="ly_cay_da" selected>🎋 Bài 1: Lý Cây Đa (Dân ca Bắc Bộ - PDF)</option>
+                <option value="doremi">🎵 Bài 2: Đồ Rê Mi Đồ (Giai điệu vỡ lòng)</option>
+                <option value="ngu_cung">🎶 Bài 3: 5 Nốt Ngũ Cung (Đô-Rê-Mi-Sol-La)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Nút xem bản nhạc & Nghe sáo mẫu bài tập -->
+          <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+            <button id="btn-view-sheet-music" type="button" class="btn btn-secondary" style="background: var(--surface2); color: #fff; border: 1px solid var(--border); font-weight: 700; font-size: 0.85rem; padding: 8px 14px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <span>📄</span> Xem bản nhạc gốc (PDF / Ảnh rõ nét)
+            </button>
+            <button id="btn-song-demo-play" type="button" class="btn btn-secondary" style="background: var(--surface2); color: var(--accent2); border: 1px solid var(--accent2); font-weight: 700; font-size: 0.85rem; padding: 8px 14px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <span>🎧</span> Nghe mẫu sáo cả bài
+            </button>
+            <div style="flex: 1; text-align: right; font-size: 0.8rem; color: var(--text-sec);">
+              Tiến độ: <strong id="song-progress-text" style="color: var(--accent);">0 / 59 nốt</strong>
+            </div>
+          </div>
+
+          <!-- KHUNG GAME LUYỆN TẬP TƯƠNG TÁC CHO NGƯỜI MỚI -->
+          <div style="background: rgba(13, 17, 23, 0.85); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px;">
+            
+            <!-- Máy đếm nhịp Metronome & Điểm số HUD -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+              <!-- Metronome 2/4 -->
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 0.76rem; color: var(--text-sec); font-weight: 700;">NHỊP 2/4:</span>
+                <div class="metronome-dot" id="metro-dot-1" title="Phách 1 (Mạnh)"></div>
+                <div class="metronome-dot" id="metro-dot-2" title="Phách 2 (Nhẹ)"></div>
+                <span id="metro-bpm-text" style="font-size: 0.72rem; color: var(--accent2); font-weight: 700;">90 BPM</span>
+              </div>
+
+              <!-- Điểm số & Combo -->
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div>
+                  <span style="font-size: 0.7rem; color: var(--text-sec); text-transform: uppercase;">Điểm:</span>
+                  <strong id="song-game-score" style="font-size: 1.25rem; color: #ffd700; margin-left: 4px;">0</strong>
+                </div>
+                <div>
+                  <span style="font-size: 0.7rem; color: var(--text-sec); text-transform: uppercase;">Combo:</span>
+                  <strong id="song-game-combo" style="font-size: 1.15rem; color: var(--accent); margin-left: 4px;">x0</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- BĂNG CHUYỀN 5 NỐT NHẠC (NOTE CAROUSEL HIGHWAY) -->
+            <div id="note-highway-carousel" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin: 16px 0; min-height: 110px; overflow: hidden;">
+              <!-- 5 nốt sẽ được sinh động học bởi JavaScript -->
+            </div>
+
+            <!-- MÀN HÌNH ĐẾM NGƯỢC 3... 2... 1... (Khi mới bấm bắt đầu) -->
+            <div id="countdown-overlay" style="display: none; text-align: center; padding: 20px 0;">
+              <div id="countdown-number" style="font-size: 4rem; font-weight: 900; color: var(--accent); animation: pulse 0.8s infinite;">3</div>
+              <div style="font-size: 0.95rem; color: #cbd5e1; font-weight: 700;">Chuẩn bị lấy hơi...</div>
+            </div>
+
+            <!-- THANH ĐO THỜI GIAN GIỮ NỐT THỜI GIAN THỰC (0.0s / 0.8s) -->
+            <div style="background: rgba(0,0,0,0.5); border-radius: var(--radius-md); padding: 12px 16px; border: 1px solid var(--border); margin-top: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 6px;">
+                <span id="song-instruction-prompt" style="font-weight: 800; color: #fff;">
+                  👉 Bấm "Bắt Đầu Luyện Bài" để bắt đầu thử thách!
+                </span>
+                <span id="song-hold-counter" style="color: var(--accent); font-weight: 900; font-size: 0.95rem;">
+                  0.0s / 0.8s
+                </span>
+              </div>
+              <div style="height: 12px; background: var(--surface2); border-radius: 6px; overflow: hidden; border: 1px solid var(--border);">
+                <div id="song-hold-progress-fill" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width 0.06s linear;"></div>
+              </div>
+            </div>
+
+            <!-- HÀNG NÚT ĐIỀU KHIỂN GAME -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 8px;">
+              <button id="btn-song-start-play" type="button" class="btn btn-primary" style="background: var(--accent); color: #fff; font-weight: 800; padding: 9px 22px; border-radius: var(--radius-md); border: none; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 14px rgba(247,129,102,0.45);">
+                <span>▶</span> Bắt Đầu Luyện Bài
+              </button>
+              
+              <div style="display: flex; gap: 8px;">
+                <button id="btn-song-skip-note" type="button" class="btn btn-secondary" style="background: var(--surface2); color: var(--text); padding: 8px 14px; border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 0.82rem; font-weight: 700; cursor: pointer;" title="Bỏ qua nốt này nếu chưa thổi được">
+                  <span>⏭️</span> Bỏ qua nốt
+                </button>
+                <button id="btn-song-restart" type="button" class="btn btn-secondary" style="background: var(--surface2); color: var(--text); padding: 8px 14px; border-radius: var(--radius-md); border: 1px solid var(--border); font-size: 0.82rem; font-weight: 700; cursor: pointer;" title="Luyện lại từ đầu bài">
+                  <span>🔄</span> Làm lại
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- MẸO HỌC CHO NGƯỜI MỚI -->
+          <div style="font-size: 0.8rem; color: var(--text-sec); line-height: 1.5; background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: var(--radius-md); border-left: 3px solid var(--accent);">
+            💡 <strong>Mẹo cho người mới:</strong> Hãy quan sát nốt màu vàng ở chính giữa băng chuyền. Nhìn sơ đồ 6 lỗ nhỏ để bấm ngón tay trước, sau đó thổi đều hơi vào mic. Khi thanh đo chuyển sang màu xanh lá và đạt 100%, máy sẽ tự động chuyển nốt!
+          </div>
+
+        </div>
+
+        <!-- CỘT HƠI THỞ THỦY TINH ĐỘNG (NEON GLASS TUBE) -->
+        <div class="card p-16" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div class="text-xs fw-700 text-sec" style="text-transform: uppercase; margin-bottom: 4px;">CƯỜNG ĐỘ HƠI THỔI (RMS)</div>
+            <div style="font-size: 0.82rem; color: #cbd5e1;">Giữ cột hơi ở vạch xanh lá để tiếng sáo ấm và vang nhất.</div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="neon-glass-tube" style="height: 50px; width: 140px; border-radius: 8px;">
+              <div class="breath-bar" id="practice-breath-bar" style="height: 100%; width: 0%; border-radius: 8px; transition: width 0.08s ease;"></div>
+            </div>
+            <span id="breath-status-label" class="badge badge-green text-xs" style="font-weight: 700;">Hơi vừa</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+<!-- ============================================================
+     CÁC MODAL HỆ THỐNG
+     ============================================================ -->
+
+<!-- ── MODAL 1: XEM BẢN NHẠC GỐC LÝ CÂY ĐA (PDF / ẢNH SẮC NÉT) ── -->
+<div id="modal-sheet-music" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;">
+  <div class="modal-card" style="max-width: 820px; width: 94%; max-height: 90vh; display: flex; flex-direction: column; padding: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div>
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <span>🎼</span> Bản Nhạc Gốc: Lý Cây Đa (Dân Ca Quan Họ Bắc Bộ)
+        </h2>
+        <span style="font-size: 0.78rem; color: var(--text-sec);">Trích xuất trực tiếp từ file PDF của bạn · Nhịp 2/4 · Tempo 90</span>
+      </div>
+      <button id="btn-close-sheet-modal" type="button" class="btn btn-secondary" style="background: var(--surface2); color: #fff; border: 1px solid var(--border); padding: 6px 14px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer;">
+        ✕ Đóng
+      </button>
+    </div>
+
+    <!-- Khung xem ảnh bản nhạc sắc nét cuộn được -->
+    <div style="flex: 1; overflow-y: auto; background: #fff; border-radius: var(--radius-md); padding: 12px; text-align: center; border: 1px solid var(--border);">
+      <img src="/static/images/ly_cay_da_sheet.png" alt="Bản nhạc Lý Cây Đa" style="max-width: 100%; height: auto; display: block; margin: 0 auto; box-shadow: 0 4px 16px rgba(0,0,0,0.15);">
+    </div>
+
+    <!-- Nút tải PDF gốc -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+      <a href="/static/ly_cay_da.pdf" download="Ly_Cay_Da_Sao_Truc.pdf" class="btn btn-primary" style="background: var(--accent); color: #fff; text-decoration: none; padding: 8px 16px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;">
+        <span>📥</span> Tải Về File PDF Gốc
+      </a>
+      <button type="button" onclick="document.getElementById('modal-sheet-music').classList.remove('open'); document.getElementById('modal-sheet-music').style.display='none';" class="btn btn-secondary" style="background: var(--surface2); color: var(--text); padding: 8px 16px; border-radius: var(--radius-md); border: 1px solid var(--border); font-weight: 600;">
+        Xong
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL 2: XEM ẢNH CÂY SÁO THẬT NGOÀI ĐỜI (SO SÁNH MÔ PHỎNG) ── -->
+<div id="modal-real-flute" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;">
+  <div class="modal-card" style="max-width: 760px; width: 94%; max-height: 90vh; display: flex; flex-direction: column; padding: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div>
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <span>🎋</span> Cây Sáo Trúc Ngoài Đời Thực Của Bạn
+        </h2>
+        <span style="font-size: 0.78rem; color: var(--text-sec);">Ảnh chụp cây sáo thật nằm ngang bàn phím máy tính ASUS</span>
+      </div>
+      <button id="btn-close-flute-modal" type="button" class="btn btn-secondary" style="background: var(--surface2); color: #fff; border: 1px solid var(--border); padding: 6px 14px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer;">
+        ✕ Đóng
+      </button>
+    </div>
+
+    <!-- Khung ảnh sáo thật -->
+    <div style="flex: 1; overflow: hidden; background: #000; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border);">
+      <img src="/static/images/sao_that_laptop.jpg" alt="Ảnh cây sáo trúc thật trên bàn phím" style="max-width: 100%; max-height: 60vh; object-fit: contain; display: block; margin: 0 auto;">
+    </div>
+
+    <div style="font-size: 0.82rem; color: #cbd5e1; margin-top: 12px; line-height: 1.5; background: var(--surface2); padding: 10px 14px; border-radius: var(--radius-md);">
+      ✨ <strong>Đặc điểm mô phỏng:</strong> Cây sáo mô phỏng trong app được thiết kế tương đồng 100% với cây sáo của bạn: Vân gỗ trúc vàng mật ong tự nhiên, lỗ thổi oval vát mép chuẩn xác ở bên trái, cụm 3 lỗ tay trái (6, 5, 4) và cụm 3 lỗ tay phải (3, 2, 1) cùng lỗ định âm ở đuôi sáo!
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL 3: BÁO CÁO KẾT QUẢ KHI DỪNG PHIÊN ── -->
+<div id="summary-modal" class="modal-backdrop">
+  <div class="modal-card">
+    <div style="text-align: center; margin-bottom: 16px;">
+      <div style="font-size: 2.4rem; margin-bottom: 6px;">🎉</div>
+      <h2 style="font-size: 1.35rem; font-weight: 800;">Tổng Kết Buổi Luyện Thổi</h2>
+      <p style="color: var(--text-sec); font-size: 0.85rem;">Chi tiết kết quả biểu diễn của bạn trong phiên vừa qua</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0;">
+      <div style="background: var(--surface2); padding: 12px; border-radius: var(--radius-md);">
+        <div class="text-xs text-sec">Điểm trung bình</div>
+        <div id="summary-score" style="font-size: 1.6rem; font-weight: 800; color: var(--accent);">--</div>
+      </div>
+      <div style="background: var(--surface2); padding: 12px; border-radius: var(--radius-md);">
+        <div class="text-xs text-sec">Xếp loại</div>
+        <div id="summary-grade" style="font-size: 1.6rem; font-weight: 800; color: var(--success);">--</div>
+      </div>
+      <div style="background: var(--surface2); padding: 12px; border-radius: var(--radius-md);">
+        <div class="text-xs text-sec">Thời gian thổi</div>
+        <div id="summary-duration" style="font-size: 1.1rem; font-weight: 700;">--</div>
+      </div>
+      <div style="background: var(--surface2); padding: 12px; border-radius: var(--radius-md);">
+        <div class="text-xs text-sec">Nốt luyện tập</div>
+        <div id="summary-note" style="font-size: 1.1rem; font-weight: 700;">--</div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+      <button id="summary-close" class="btn btn-secondary" style="background: var(--surface2); color: var(--text); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+        Đóng
+      </button>
+      <button id="summary-practice-again" class="btn btn-primary" style="background: var(--accent); color: #fff; padding: 10px 20px; border-radius: var(--radius-md); border: none; font-weight: 600;">
+        Luyện tiếp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL 4: DÒ TONE SÁO TỰ ĐỘNG ── -->
+<div id="modal-detect-tone" class="modal-backdrop" style="display: none;">
+  <div class="modal-card" style="max-width: 480px; text-align: center; border: 2px solid var(--accent); box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+    <div style="font-size: 2.8rem; margin-bottom: 8px;">🔍</div>
+    <h2 style="font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 6px;">
+      Dò Tone Sáo Trúc Tự Động
+    </h2>
+    <p style="color: var(--text-sec); font-size: 0.88rem; line-height: 1.5; margin-bottom: 18px;">
+      👉 Hãy <strong>bịt kín cả 6 lỗ</strong> (thế bấm nốt Đô 1) và <strong>thổi một hơi dài, đều đặn trong 2-3 giây</strong> vào micro để máy tự động nhận diện cây sáo của bạn!
+    </p>
+
+    <div style="background: var(--surface2); height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 14px; border: 1px solid var(--border);">
+      <div id="detect-tone-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 0.1s linear;"></div>
+    </div>
+
+    <div id="detect-tone-status" style="font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: 12px;">
+      Đang lắng nghe tiếng sáo...
+    </div>
+
+    <div id="detect-tone-result" style="display: none; padding: 12px; background: rgba(63, 185, 80, 0.15); border: 1px solid var(--success); border-radius: var(--radius-md); font-weight: 800; font-size: 1.05rem; color: #3fb950; margin-bottom: 16px;">
+      🎉 Kết quả: Đang cập nhật...
+    </div>
+
+    <button id="btn-close-detect-tone" type="button" class="btn btn-secondary" style="padding: 9px 24px; border-radius: var(--radius-md); background: var(--surface2); color: var(--text); border: 1px solid var(--border); font-weight: 600;">
+      Hủy bỏ
+    </button>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/dial_tuner.js?v=20261109_v2"></script>
+<script src="/static/practice.js?v=20261109_v8_pdfscore"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Modal bản nhạc PDF
+    const btnSheet = document.getElementById('btn-view-sheet-music');
+    const modalSheet = document.getElementById('modal-sheet-music');
+    const btnCloseSheet = document.getElementById('btn-close-sheet-modal');
+    if (btnSheet && modalSheet) {
+      btnSheet.addEventListener('click', () => {
+        modalSheet.style.display = 'flex';
+        modalSheet.classList.add('open');
+      });
+    }
+    if (btnCloseSheet && modalSheet) {
+      btnCloseSheet.addEventListener('click', () => {
+        modalSheet.style.display = 'none';
+        modalSheet.classList.remove('open');
+      });
+    }
+
+    // Modal ảnh sáo thật ngoài đời
+    const btnRealFlute = document.getElementById('btn-view-real-flute');
+    const modalRealFlute = document.getElementById('modal-real-flute');
+    const btnCloseFlute = document.getElementById('btn-close-flute-modal');
+    if (btnRealFlute && modalRealFlute) {
+      btnRealFlute.addEventListener('click', () => {
+        modalRealFlute.style.display = 'flex';
+        modalRealFlute.classList.add('open');
+      });
+    }
+    if (btnCloseFlute && modalRealFlute) {
+      btnCloseFlute.addEventListener('click', () => {
+        modalRealFlute.style.display = 'none';
+        modalRealFlute.classList.remove('open');
+      });
+    }
+
+    // Thanh trượt độ nhạy mic
+    const gainSlider = document.getElementById('mic-gain-slider');
+    const gainVal = document.getElementById('mic-gain-val');
+    if (gainSlider && gainVal) {
+      const savedGain = localStorage.getItem('hocsao_mic_gain');
+      if (savedGain) {
+        gainSlider.value = savedGain;
+        gainVal.textContent = `${savedGain}x`;
+      }
+      gainSlider.addEventListener('input', () => {
+        const val = parseFloat(gainSlider.value).toFixed(1);
+        gainVal.textContent = `${val}x`;
+        localStorage.setItem('hocsao_mic_gain', val);
+        if (window.hocsaoAudio) {
+          window.hocsaoAudio.setGain(val);
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

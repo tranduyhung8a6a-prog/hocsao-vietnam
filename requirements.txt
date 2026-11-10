@@ -1,0 +1,19 @@
+# ============================================================
+# HocSao — Thư viện phụ thuộc (Python 3.10+)
+# Toàn bộ gói sử dụng Wheel biên dịch sẵn, cài đặt tức thì.
+# ============================================================
+
+# Web server & Framework
+fastapi>=0.110.0
+uvicorn>=0.29.0
+jinja2>=3.1.3
+aiofiles>=23.2.1
+
+# Xử lý tín hiệu âm thanh
+numpy>=1.26.0
+
+# Hiển thị nội dung Markdown
+markdown>=3.5.2
+
+# Hỗ trợ tải file nhạc lên Web (Multipart form-data)
+python-multipart>=0.0.9

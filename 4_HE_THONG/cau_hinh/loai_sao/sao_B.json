@@ -1,0 +1,278 @@
+{
+  "ten_sao": "Sáo Si",
+  "am_goc": "B",
+  "mo_ta": "Sáo trúc 6 lỗ giọng Si (B4) — Ngọt ngào, êm dịu, hợp nhạc nhẹ.",
+  "do_kho": "Cơ bản",
+  "tan_so_co_ban_hz": 246.94,
+  "ghi_chu_am_co_ban": "Sáo Si (B) — bịt kín cả 6 lỗ",
+  "cach_phan_biet_quang": "Để phân biệt Quãng 1 và Quãng 2: (1) Thổi nhẹ, hơi chậm → ra Quãng 1 (Đô 1 - Si 1). (2) Tăng lực hơi, siết môi hơn, hướng luồng hơi lên cao hơn một chút → tự nhiên sẽ nhảy lên Quãng 2 (Đô 2 - Si 2). Người mới thường bị vỡ tiếng khi chuyển quãng — đây là bình thường. Hãy luyện thổi nốt Sol hoặc Đô 1 thật ổn định trước.",
+  "bang_bam": [
+    {
+      "ten_quang": "Quãng 1 (Thổi nhẹ)",
+      "cac_not": [
+        {
+          "note_viet": "Đô 1",
+          "note_western": "C",
+          "octave": 4,
+          "frequency_hz": 261.63,
+          "holes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Bịt kín cả 6 lỗ, thổi nhẹ và luồng hơi ấm, hướng xuống đáy lỗ thổi. Dòng kẻ phụ 1 dưới khuôn nhạc."
+        },
+        {
+          "note_viet": "Rê 1",
+          "note_western": "D",
+          "octave": 4,
+          "frequency_hz": 293.66,
+          "holes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở lỗ 6 (ngón nhẫn tay phải), bịt kín 5 lỗ 1, 2, 3, 4, 5. Sát dưới dòng kẻ 1."
+        },
+        {
+          "note_viet": "Mi 1",
+          "note_western": "E",
+          "octave": 4,
+          "frequency_hz": 329.63,
+          "holes": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở lỗ 5 và 6 (hai ngón tay phải), bịt kín 4 lỗ trên. Nằm trên dòng kẻ 1."
+        },
+        {
+          "note_viet": "Fa 1",
+          "note_western": "F",
+          "octave": 4,
+          "frequency_hz": 349.23,
+          "holes": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở cả 3 lỗ dưới (4, 5, 6), bịt kín 3 lỗ trên (1, 2, 3). Nằm ở khe 1."
+        },
+        {
+          "note_viet": "Sol 1",
+          "note_western": "G",
+          "octave": 4,
+          "frequency_hz": 392.0,
+          "holes": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Bịt lỗ 1 và 2 (tay trái), mở các lỗ 3, 4, 5, 6. Nằm trên dòng kẻ 2."
+        },
+        {
+          "note_viet": "La 1",
+          "note_western": "A",
+          "octave": 4,
+          "frequency_hz": 440.0,
+          "holes": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Chỉ bịt duy nhất lỗ 1 (ngón trỏ trái), mở 5 lỗ còn lại. Nằm ở khe 2."
+        },
+        {
+          "note_viet": "Si 1",
+          "note_western": "B",
+          "octave": 4,
+          "frequency_hz": 493.88,
+          "holes": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở toàn bộ 6 lỗ sáo, giữ thăng bằng bằng hai ngón tay cái và môi. Nằm trên dòng kẻ 3."
+        },
+        {
+          "note_viet": "Si giáng 1",
+          "note_western": "Bb",
+          "octave": 4,
+          "frequency_hz": 466.16,
+          "holes": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Mở lỗ 1, bịt lỗ 2 và 3, mở lỗ 4, 5, 6 (chuẩn bảng phấn ○ ● ● ○ ○ ○). Nằm trên dòng kẻ 3 có dấu giáng."
+        },
+        {
+          "note_viet": "Đô 2",
+          "note_western": "C",
+          "octave": 5,
+          "frequency_hz": 523.25,
+          "holes": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "blow_strength": "nhe",
+          "fingering_desc": "Thế mở ngón 1 chuẩn bảng phấn: Mở lỗ 1, bịt kín 5 lỗ 2, 3, 4, 5, 6. Nằm ở khe 3."
+        }
+      ]
+    },
+    {
+      "ten_quang": "Quãng 2 (Thổi mạnh)",
+      "ghi_chu": "Giữ nguyên thế bấm như Quãng 1, tăng tốc luồng hơi và siết nhẹ khóe môi — âm sẽ tự động nhảy lên một quãng 8.",
+      "cac_not": [
+        {
+          "note_viet": "Đô 2 (Thổi mạnh)",
+          "note_western": "C",
+          "octave": 5,
+          "frequency_hz": 523.25,
+          "holes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "blow_strength": "manh",
+          "fingering_desc": "Bịt kín cả 6 lỗ, thổi mạnh và gom môi để lên quãng 2."
+        },
+        {
+          "note_viet": "Rê 2",
+          "note_western": "D",
+          "octave": 5,
+          "frequency_hz": 587.33,
+          "holes": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "blow_strength": "manh",
+          "fingering_desc": "Mở lỗ 6, giữ 5 lỗ còn lại, thổi mạnh."
+        },
+        {
+          "note_viet": "Mi 2",
+          "note_western": "E",
+          "octave": 5,
+          "frequency_hz": 659.25,
+          "holes": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "blow_strength": "manh",
+          "fingering_desc": "Mở lỗ 5 và lỗ 6, thổi mạnh."
+        },
+        {
+          "note_viet": "Fa 2",
+          "note_western": "F",
+          "octave": 5,
+          "frequency_hz": 698.46,
+          "holes": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "manh",
+          "fingering_desc": "Mở 3 lỗ dưới, bịt 3 lỗ trên, thổi mạnh."
+        },
+        {
+          "note_viet": "Sol 2",
+          "note_western": "G",
+          "octave": 5,
+          "frequency_hz": 783.99,
+          "holes": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "manh",
+          "fingering_desc": "Bịt lỗ 1, 2, mở 3, 4, 5, 6, thổi mạnh."
+        },
+        {
+          "note_viet": "La 2",
+          "note_western": "A",
+          "octave": 5,
+          "frequency_hz": 880.0,
+          "holes": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "manh",
+          "fingering_desc": "Chỉ bịt lỗ 1, mở 5 lỗ, thổi mạnh."
+        },
+        {
+          "note_viet": "Si 2",
+          "note_western": "B",
+          "octave": 5,
+          "frequency_hz": 987.77,
+          "holes": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "blow_strength": "manh",
+          "fingering_desc": "Mở tất cả 6 lỗ, thổi mạnh."
+        }
+      ]
+    }
+  ]
+}
